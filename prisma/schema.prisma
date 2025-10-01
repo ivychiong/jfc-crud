@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int            @id @default(autoincrement())
+  name            String
+  email           String         @unique
+  password        String
+  createdAt       DateTime       @default(now())
+}
+
+model Category {
+  id              Int            @id @default(autoincrement())
+  name            String         @unique
+  businesses      Business[]     @relation("BusinessCategories")
+}
+
+model Tag {
+  id              Int            @id @default(autoincrement())
+  name            String         @unique
+  people          Person[]       @relation("PersonTags")
+  businesses      Business[]     @relation("BusinessTags")
+}
+
+model Task {
+  id              Int            @id @default(autoincrement())
+  title           String
+  description     String
+  completed       Boolean        @default(false)
+  business        Business?      @relation("BusinessTasks", fields: [businessId], references: [id])
+  businessId      Int?
+  person          Person?        @relation("PersonTasks", fields: [personId], references: [id])
+  personId        Int?
+}
+
+model Person {
+  id              Int             @id @default(autoincrement())
+  first_name      String
+  last_name       String
+  email           String          @unique
+  phone           String
+  business        Business?       @relation(fields: [businessId], references: [id])
+  businessId      Int
+  tags            Tag[]           @relation("PersonTags")
+  tasks           Task[]          @relation("PersonTasks")
+}
+
+model Business {
+  id              Int             @id @default(autoincrement())
+  name            String          @unique
+  email           String          @unique
+  categories      Category[]      @relation("BusinessCategories")
+  people          Person[]
+  tags            Tag[]           @relation("BusinessTags")
+  tasks           Task[]          @relation("BusinessTasks")
+}
