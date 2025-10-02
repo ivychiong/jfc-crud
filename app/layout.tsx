@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import React from "react";
 
+import { Toaster } from "@/components/ui/sonner";
+
 import "./globals.css";
 
 const figtree = localFont({
@@ -24,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${figtree.variable} antialiased`}>{children}</body>
+      <Toaster position="top-right" richColors />
     </html>
   );
 }
