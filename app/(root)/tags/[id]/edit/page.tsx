@@ -1,0 +1,30 @@
+import React from "react";
+
+import Card from "@/components/Card";
+import ItemForm from "@/components/forms/ItemForm";
+import { prisma } from "@/lib/prisma";
+
+const EditTag = async ({ params }: { params: { id: string } }) => {
+  const { id } = await params;
+  const tag = await prisma.tag.findUnique({
+    where: { id: Number(id) },
+  });
+
+  if (!tag) {
+    return <p className="text-red-600">Tag not found.</p>;
+  }
+
+  return (
+    <Card>
+      <ItemForm
+        label="Tag"
+        action="EDIT"
+        route="/tags"
+        id={tag.id}
+        defaultValue={tag.name}
+      />
+    </Card>
+  );
+};
+
+export default EditTag;

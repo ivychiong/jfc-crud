@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,37 +13,86 @@ interface ItemFormProps {
   label: string;
   action: "ADD" | "EDIT";
   route: string;
+  id?: number | string;
+  defaultValue?: string;
 }
 
 const actionTitleMap: Record<string, string> = {
   ADD: "Add",
-  EDIT: "Edit",
+  EDIT: "Update",
 };
 
-const ItemForm = ({ label, action }: ItemFormProps) => {
-  const pathName = usePathname();
-  const basePath = pathName.substring(0, pathName.lastIndexOf("/")) || "/";
+const ItemForm = ({
+  label,
+  action,
+  route,
+  id,
+  defaultValue = "",
+}: ItemFormProps) => {
+  const router = useRouter();
+
+  const [name, setName] = useState(defaultValue);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const url = action === "ADD" ? `/api${route}` : `/api${route}/${id}`;
+      const method = action === "ADD" ? "POST" : "PATCH";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      setName("");
+      toast.success(
+        `${label} ${action === "ADD" ? "created" : "updated"} successfully!`
+      );
+
+      router.refresh();
+      router.push(route);
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Something went wrong";
+      toast.error(`Error: ${errorMessage}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const actionTitle = actionTitleMap[action];
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <p>{`${actionTitle} New ${label}`}</p>
       <div className="space-y-3 flex flex-col mt-6">
         <Label htmlFor={label.toLowerCase()}>{`${label} Name`}</Label>
         <Input
           required
           type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           id={label.toLowerCase()}
           className="max-w-sm border border-gray-300 focus:border-2 focus:border-blue-800 !ring-0"
         />
       </div>
       <div className="mt-6 flex justify-end gap-3">
-        <Button className="btn-secondary" asChild>
-          <Link href={basePath}>Cancel</Link>
+        <Button className="btn-secondary" asChild disabled={loading}>
+          <Link href={route}>Cancel</Link>
         </Button>
         <Button
           type="submit"
           className="btn-primary"
+          disabled={loading}
         >{`${actionTitle} ${label}`}</Button>
       </div>
     </form>

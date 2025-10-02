@@ -8,3 +8,24 @@ export async function GET() {
   });
   return NextResponse.json(tags);
 }
+
+export async function POST(req: Request) {
+  try {
+    const { name } = await req.json();
+
+    if (!name || name.trim() === "") {
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    const newTag = await prisma.tag.create({
+      data: { name },
+    });
+
+    return NextResponse.json(newTag, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to create tag" },
+      { status: 500 }
+    );
+  }
+}
