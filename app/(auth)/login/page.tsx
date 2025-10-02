@@ -36,7 +36,7 @@ const LoginPage = () => {
       if (res.ok) {
         toast.success("Login successful!");
         localStorage.setItem("token", data.token);
-        router.push("/task");
+        router.push("/tasks");
       } else {
         toast.error(data.error || "Login failed");
       }
