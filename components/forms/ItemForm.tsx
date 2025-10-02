@@ -70,6 +70,25 @@ const ItemForm = ({
     }
   };
 
+  const handleDelete = async () => {
+    const confirmed = confirm(
+      `Are you sure you want to delete this ${label.toLowerCase()}?`
+    );
+    if (!confirmed) return;
+
+    const res = await fetch(`/api${route}/${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      toast.success(`${label} deleted successfully.`);
+      router.push(route);
+      router.refresh();
+    } else {
+      toast.error(`Failed to delete ${label}.`);
+    }
+  };
+
   const actionTitle = actionTitleMap[action];
   return (
     <form onSubmit={handleSubmit}>
@@ -95,6 +114,18 @@ const ItemForm = ({
           disabled={loading}
         >{`${actionTitle} ${label}`}</Button>
       </div>
+      {action === "EDIT" && (
+        <div>
+          <Button
+            type="button"
+            className="btn-warning"
+            disabled={loading}
+            onClick={handleDelete}
+          >
+            DELETE
+          </Button>
+        </div>
+      )}
     </form>
   );
 };

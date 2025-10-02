@@ -28,3 +28,7 @@ body {
 @utility btn-secondary {
   @apply btn bg-gray-400  hover:bg-gray-500;
 }
+
+@utility btn-warning {
+  @apply btn bg-red-500  hover:bg-red-600;
+}
