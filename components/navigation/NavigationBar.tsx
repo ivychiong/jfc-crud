@@ -9,11 +9,20 @@ import Header from "../Header";
 const NavigationBar = () => {
   const routeName = usePathname();
 
-  const title = routeName
-    .split("/")
-    .filter(Boolean)
-    .map((part) => part[0].toUpperCase() + part.slice(1))
-    .join(" > ");
+  const routeTitleMap: Record<string, string> = {
+    "/categories/create": "Add Category",
+    "/categories": "Categories",
+    "/tags/create": "Add Tag",
+    "/tags": "Tags",
+  };
+
+  const title =
+    routeTitleMap[routeName] ||
+    routeName
+      .split("/")
+      .filter(Boolean)
+      .map((part) => part[0].toUpperCase() + part.slice(1))
+      .join(" ");
 
   return (
     <nav>

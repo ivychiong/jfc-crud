@@ -37,7 +37,11 @@ const NavigationLinks = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-md">
                 {link.dropdown.map((item) => (
-                  <DropdownMenuItem key={item.href} asChild>
+                  <DropdownMenuItem
+                    key={item.href}
+                    asChild
+                    className="cursor-pointer"
+                  >
                     <Link href={item.href}>{item.label}</Link>
                   </DropdownMenuItem>
                 ))}
@@ -75,7 +79,11 @@ const NavigationLinks = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-md">
               {userLink?.dropdown?.map((item) => (
-                <DropdownMenuItem key={item.href} asChild>
+                <DropdownMenuItem
+                  key={item.href}
+                  asChild
+                  className="cursor-pointer"
+                >
                   <Link href={item.href}>{item.label}</Link>
                 </DropdownMenuItem>
               ))}

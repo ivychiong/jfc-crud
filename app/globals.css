@@ -16,3 +16,15 @@ body {
   color: var(--foreground);
   font-family: "Figtree", sans-serif;
 }
+
+@utility btn {
+  @apply !rounded-full text-white font-bold;
+}
+
+@utility btn-primary {
+  @apply btn bg-blue-500  hover:bg-blue-600;
+}
+
+@utility btn-secondary {
+  @apply btn bg-gray-400  hover:bg-gray-500;
+}
