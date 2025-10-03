@@ -7,7 +7,9 @@ interface Params {
 }
 
 export async function GET(req: Request, { params }: Params) {
-  const businessId = await Number(params.id);
+  const { id } = await params;
+  const businessId = Number(id);
+
   if (isNaN(businessId)) {
     return NextResponse.json({ error: "Invalid business ID" }, { status: 400 });
   }
@@ -29,7 +31,8 @@ export async function GET(req: Request, { params }: Params) {
 
 export async function DELETE(req: Request, { params }: Params) {
   try {
-    const businessId = await Number(params.id);
+    const { id } = await params;
+    const businessId = Number(id);
 
     await prisma.business.delete({
       where: { id: businessId },
@@ -51,7 +54,9 @@ export async function DELETE(req: Request, { params }: Params) {
 }
 
 export async function PATCH(req: Request, { params }: Params) {
-  const businessId = Number(params.id);
+  const { id } = await params;
+  const businessId = Number(id);
+
   if (isNaN(businessId)) {
     return NextResponse.json({ error: "Invalid business ID" }, { status: 400 });
   }

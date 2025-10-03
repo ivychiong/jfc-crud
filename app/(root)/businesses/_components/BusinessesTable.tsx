@@ -63,7 +63,6 @@ const BusinessesTable = ({ businesses }: { businesses: Business[] }) => {
       </div>
       <ListTable
         items={mappedBusinesses}
-        label="Businesses"
         route={`/businesses`}
         onDelete={handleDelete}
         headers={["Business Name", "Email", "Categories", "Tags"]}

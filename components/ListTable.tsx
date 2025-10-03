@@ -34,9 +34,26 @@ const ListTable = ({ items, onDelete, route, headers }: ListTableProps) => {
       <TableBody>
         {items.map((item) => (
           <TableRow key={item.id}>
-            {headers.map((header) => (
-              <TableCell key={header}>{item[header]}</TableCell>
-            ))}
+            {headers.map((header) => {
+              if (
+                (header.toLowerCase() === "name" ||
+                  header.toLowerCase() === "business name") &&
+                (route === "/people" || route === "/businesses")
+              ) {
+                return (
+                  <TableCell key={header}>
+                    <Link
+                      href={`${route}/${item.id}/show`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {item[header]}
+                    </Link>
+                  </TableCell>
+                );
+              }
+
+              return <TableCell key={header}>{item[header]}</TableCell>;
+            })}
             <TableCell className="text-right flex justify-end gap-2">
               <Link href={`${route}/${item.id}/edit`}>
                 <Button size="sm" variant="outline">

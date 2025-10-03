@@ -7,7 +7,9 @@ interface Params {
 }
 
 export async function GET(req: Request, { params }: Params) {
-  const personId = Number(params.id);
+  const { id } = await params;
+  const personId = Number(id);
+
   if (isNaN(personId)) {
     return NextResponse.json({ error: "Invalid person ID" }, { status: 400 });
   }
@@ -29,7 +31,9 @@ export async function GET(req: Request, { params }: Params) {
 
 export async function PATCH(req: Request, { params }: Params) {
   try {
-    const personId = Number(params.id);
+    const { id } = await params;
+    const personId = Number(id);
+
     const body = await req.json();
     const { firstName, lastName, email, phone, businessId, tags } = body;
 
@@ -61,7 +65,8 @@ export async function PATCH(req: Request, { params }: Params) {
 
 export async function DELETE(req: Request, { params }: Params) {
   try {
-    const personId = await Number(params.id);
+    const { id } = await params;
+    const personId = Number(id);
 
     await prisma.person.delete({
       where: { id: personId },
