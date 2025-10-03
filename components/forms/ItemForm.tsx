@@ -17,11 +17,6 @@ interface ItemFormProps {
   defaultValue?: string;
 }
 
-const actionTitleMap: Record<string, string> = {
-  ADD: "Add",
-  EDIT: "Update",
-};
-
 const ItemForm = ({
   label,
   action,
@@ -89,44 +84,46 @@ const ItemForm = ({
     }
   };
 
-  const actionTitle = actionTitleMap[action];
+  const actionTitle = action === "ADD" ? "Add New" : "Update";
   return (
-    <form onSubmit={handleSubmit}>
-      <p>{`${actionTitle} New ${label}`}</p>
-      <div className="space-y-3 flex flex-col mt-6">
-        <Label htmlFor={label.toLowerCase()}>{`${label} Name`}</Label>
-        <Input
-          required
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          id={label.toLowerCase()}
-          className="max-w-sm border border-gray-300 focus:border-2 focus:border-blue-800 !ring-0"
-        />
-      </div>
-      <div className="mt-6 flex justify-end gap-3">
-        <Button className="btn-secondary" asChild disabled={loading}>
-          <Link href={route}>Cancel</Link>
-        </Button>
-        <Button
-          type="submit"
-          className="btn-primary"
-          disabled={loading}
-        >{`${actionTitle} ${label}`}</Button>
-      </div>
-      {action === "EDIT" && (
-        <div>
-          <Button
-            type="button"
-            className="btn-warning"
-            disabled={loading}
-            onClick={handleDelete}
-          >
-            DELETE
-          </Button>
+    <>
+      <p>{`${actionTitle} ${label}`}</p>
+      <form onSubmit={handleSubmit}>
+        <div className="space-y-3 flex flex-col mt-6">
+          <Label htmlFor={label.toLowerCase()}>{`${label} Name`}</Label>
+          <Input
+            required
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            id={label.toLowerCase()}
+            className="max-w-sm border border-gray-300 focus:border-2 focus:border-blue-800 !ring-0"
+          />
         </div>
-      )}
-    </form>
+        <div className="mt-6 flex justify-end gap-3">
+          <Button className="btn-secondary" asChild disabled={loading}>
+            <Link href={route}>Cancel</Link>
+          </Button>
+          <Button
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+          >{`${actionTitle} ${label}`}</Button>
+        </div>
+        {action === "EDIT" && (
+          <div>
+            <Button
+              type="button"
+              className="btn-warning"
+              disabled={loading}
+              onClick={handleDelete}
+            >
+              DELETE
+            </Button>
+          </div>
+        )}
+      </form>
+    </>
   );
 };
 

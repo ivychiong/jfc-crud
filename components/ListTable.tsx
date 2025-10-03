@@ -15,25 +15,28 @@ import {
 
 interface ListTableProps {
   items: Record<string, string | number>[];
-  label: string;
   onDelete: (id: string | number) => void;
   route?: string;
+  headers: string[];
 }
 
-const ListTable = ({ items, label, onDelete, route }: ListTableProps) => {
-  console.log(items);
+const ListTable = ({ items, onDelete, route, headers }: ListTableProps) => {
   return (
     <Table className="mt-4">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">{`${label} Name`}</TableHead>
+          {headers.map((header) => (
+            <TableHead key={header}>{header}</TableHead>
+          ))}
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {items.map((item) => (
           <TableRow key={item.id}>
-            <TableCell className="font-medium">{item.name}</TableCell>
+            {headers.map((header) => (
+              <TableCell key={header}>{item[header]}</TableCell>
+            ))}
             <TableCell className="text-right flex justify-end gap-2">
               <Link href={`${route}/${item.id}/edit`}>
                 <Button size="sm" variant="outline">
