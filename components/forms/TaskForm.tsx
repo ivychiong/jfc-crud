@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,8 +51,9 @@ const TaskForm = ({ type, tasks = [] }: TaskFormProps) => {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to create task");
+      if (!res.ok && res.status === 401) {
+        toast.error("Unauthorized. Redirectering to login page...");
+        router.push("/login");
       }
 
       setTitle("");

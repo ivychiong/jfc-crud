@@ -1,9 +1,20 @@
+import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const token = req.headers.get("cookie")?.split("token=")?.[1];
+    if (!token)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET!);
+    } catch {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
     const tasks = await prisma.task.findMany({
       include: { business: true, person: true },
     });
@@ -18,6 +29,16 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const token = req.headers.get("cookie")?.split("token=")?.[1];
+    if (!token)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET!);
+    } catch {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
     const body = await req.json();
     const { title, description, completed, businessId, personId } = body;
 

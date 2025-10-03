@@ -3,6 +3,7 @@
 import { Task } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 import Card from "@/components/Card";
 import { Button } from "@/components/ui/button";
@@ -29,11 +30,16 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
   const completedTasks = tasks?.filter((t) => t.completed);
 
   const handleToggleStatus = async (id: number, completed: boolean) => {
-    await fetch(`/api/tasks/${id}`, {
+    const res = await fetch(`/api/tasks/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ completed: !completed }),
     });
+
+    if (!res.ok && res.status === 401) {
+      toast.error("Unauthorized. Redirectering to login page...");
+      router.replace("/login");
+    }
 
     router.refresh();
   };
