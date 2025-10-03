@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useMemo } from "react";
 import { toast } from "sonner";
 
 import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
 import { Button } from "@/components/ui/button";
 
-const CategoriesPageClient = ({
+const CategoriesTable = ({
   categories,
 }: {
   categories: Record<string, string | number>[];
@@ -34,6 +34,13 @@ const CategoriesPageClient = ({
     }
   };
 
+  const mappedCategories = useMemo(() => {
+    return categories.map((category) => ({
+      id: category.id,
+      "Category Name": category.name,
+    }));
+  }, [categories]);
+
   return (
     <Card>
       <div className="flex justify-end mb-4">
@@ -46,13 +53,14 @@ const CategoriesPageClient = ({
       </div>
 
       <ListTable
-        items={categories}
+        items={mappedCategories}
         label="Category"
         route="/categories"
         onDelete={handleDelete}
+        headers={["Category Name"]}
       />
     </Card>
   );
 };
 
-export default CategoriesPageClient;
+export default CategoriesTable;

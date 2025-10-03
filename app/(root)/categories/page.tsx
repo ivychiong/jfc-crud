@@ -1,13 +1,13 @@
 import React from "react";
 
-import CategoriesPageClient from "./CategoriesPageClient";
+import { CategoriesTable } from "./_components";
 
 const CategoriesPage = async () => {
   const categories = await fetch(`${process.env.BASE_URL}/api/categories`).then(
     (res) => res.json()
   );
 
-  return <CategoriesPageClient categories={categories} />;
+  return <CategoriesTable categories={categories} />;
 };
 
 export default CategoriesPage;
