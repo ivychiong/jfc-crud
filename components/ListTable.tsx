@@ -18,9 +18,16 @@ interface ListTableProps {
   onDelete: (id: string | number) => void;
   route?: string;
   headers: string[];
+  hideActions?: boolean;
 }
 
-const ListTable = ({ items, onDelete, route, headers }: ListTableProps) => {
+const ListTable = ({
+  items,
+  onDelete,
+  route,
+  headers,
+  hideActions = false,
+}: ListTableProps) => {
   return (
     <Table className="mt-4">
       <TableHeader>
@@ -54,15 +61,17 @@ const ListTable = ({ items, onDelete, route, headers }: ListTableProps) => {
 
               return <TableCell key={header}>{item[header]}</TableCell>;
             })}
-            <TableCell className="text-right flex justify-end gap-2">
-              <Link href={`${route}/${item.id}/edit`}>
-                <Button size="sm" variant="outline">
-                  Edit
-                </Button>
-              </Link>
+            {!hideActions && (
+              <TableCell className="text-right flex justify-end gap-2">
+                <Link href={`${route}/${item.id}/edit`}>
+                  <Button size="sm" variant="outline">
+                    Edit
+                  </Button>
+                </Link>
 
-              <Button onClick={() => onDelete(item.id)}>Delete</Button>
-            </TableCell>
+                <Button onClick={() => onDelete(item.id)}>Delete</Button>
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

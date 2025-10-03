@@ -1,7 +1,13 @@
 import React from "react";
 
-const TasksPage = () => {
-  return <div>TasksPage</div>;
+import { TasksTable } from "./_components";
+
+const TasksPage = async () => {
+  const res = await fetch(`${process.env.BASE_URL}/api/tasks`, {
+    cache: "no-store",
+  });
+  const tasks = await res.json();
+  return <TasksTable tasks={tasks} />;
 };
 
 export default TasksPage;

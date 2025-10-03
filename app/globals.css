@@ -30,5 +30,9 @@ body {
 }
 
 @utility btn-warning {
-  @apply btn bg-red-500  hover:bg-red-600;
+  @apply btn bg-red-400  hover:bg-red-500;
+}
+
+@utility btn-success {
+  @apply btn bg-green-400  hover:bg-green-500;
 }
