@@ -1,13 +1,13 @@
 import React from "react";
 
-import TagPageClient from "./TagPageClient";
+import { TagsTable } from "./_components";
 
 const TagsPage = async () => {
   const tags = await fetch(`${process.env.BASE_URL}/api/tags`).then((res) =>
     res.json()
   );
 
-  return <TagPageClient tags={tags} />;
+  return <TagsTable tags={tags} />;
 };
 
 export default TagsPage;

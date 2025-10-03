@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useMemo } from "react";
 import { toast } from "sonner";
 
 import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
 import { Button } from "@/components/ui/button";
 
-const TagPageClient = ({ tags }: { tags: Record<string, string>[] }) => {
+const TagsTable = ({ tags }: { tags: Record<string, string>[] }) => {
   const router = useRouter();
 
   const handleDelete = async (id: string | number) => {
@@ -30,6 +30,13 @@ const TagPageClient = ({ tags }: { tags: Record<string, string>[] }) => {
     }
   };
 
+  const mappedTags = useMemo(() => {
+    return tags.map((tag) => ({
+      id: tag.id,
+      "Tag Name": tag.name,
+    }));
+  }, [tags]);
+
   return (
     <Card>
       <div className="flex justify-end mb-4">
@@ -42,13 +49,13 @@ const TagPageClient = ({ tags }: { tags: Record<string, string>[] }) => {
       </div>
 
       <ListTable
-        items={tags}
-        label="Tag"
+        items={mappedTags}
         route={`/tags`}
         onDelete={handleDelete}
+        headers={["Tag Name"]}
       />
     </Card>
   );
 };
 
-export default TagPageClient;
+export default TagsTable;
