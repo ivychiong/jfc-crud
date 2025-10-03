@@ -1,13 +1,24 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import React from "react";
 
 import { PeopleTable } from "./_components";
 
 const PeoplePage = async () => {
-  const people = await fetch(`${process.env.BASE_URL}/api/people`).then((res) =>
-    res.json()
-  );
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
 
-  console.log(people);
+  const res = await fetch(`${process.env.BASE_URL}/api/people`, {
+    headers: { cookie: `token=${token}` },
+    cache: "no-store",
+  });
+
+  if (!res.ok && res.status === 401) {
+    console.error("People fetch failed:", await res.text());
+    redirect("/login");
+  }
+
+  const people = await res.json();
 
   return <PeopleTable people={people} />;
 };

@@ -1,9 +1,20 @@
+import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const token = req.headers.get("cookie")?.split("token=")?.[1];
+    if (!token)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET!);
+    } catch {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
     const people = await prisma.person.findMany({
       include: {
         business: true,
@@ -13,18 +24,26 @@ export async function GET() {
     });
 
     return NextResponse.json(people, { status: 200 });
-  } catch (err: unknown) {
-    console.error("Error fetching people:", err);
-
-    const message =
-      err instanceof Error ? err.message : "Failed to fetch people";
-
-    return NextResponse.json({ error: message }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to fetch people" },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(req: Request) {
   try {
+    const token = req.headers.get("cookie")?.split("token=")?.[1];
+    if (!token)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET!);
+    } catch {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
     const body = await req.json();
     const { firstName, lastName, email, phone, businessId, tags } = body;
 
@@ -54,10 +73,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(newPerson, { status: 201 });
-  } catch (err: unknown) {
-    console.error("Error creating person:", err);
+  } catch {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to create person" },
+      { error: "Failed to create person" },
       { status: 500 }
     );
   }

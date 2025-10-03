@@ -1,15 +1,26 @@
+import { cookies } from "next/headers";
 import React from "react";
 
 import Card from "@/components/Card";
 import TaskForm from "@/components/forms/TaskForm";
 
 const PersonPage = async ({ params }: { params: { id: string } }) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
   const { id } = await params;
 
-  const [personRes, tasksRes] = await Promise.all([
-    fetch(`${process.env.BASE_URL}/api/people/${id}`),
-    fetch(`${process.env.BASE_URL}/api/people/${id}/tasks`),
-  ]);
+  const tasksRes = await fetch(
+    `${process.env.BASE_URL}/api/people/${id}/tasks`,
+    {
+      headers: { cookie: `token=${token}` },
+      cache: "no-store",
+    }
+  );
+
+  const personRes = await fetch(`${process.env.BASE_URL}/api/people/${id}`, {
+    headers: { cookie: `token=${token}` },
+    cache: "no-store",
+  });
 
   if (!personRes.ok || !tasksRes.ok) {
     throw new Error("Failed to fetch initial data");

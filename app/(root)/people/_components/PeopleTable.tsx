@@ -41,14 +41,16 @@ const PeopleTable = ({ people }: { people: Person[] }) => {
       method: "DELETE",
     });
 
-    if (res.ok) {
-      toast.success("Person deleted successfully.");
-
-      router.push("/people");
-      router.refresh();
-    } else {
-      toast.error("Failed to delete");
+    if (!res.ok && res.status === 401) {
+      toast.error("Unauthorized. Redirectering to login page...");
+      router.replace("/login");
+      return;
     }
+
+    toast.success("Person deleted successfully.");
+
+    router.push("/people");
+    router.refresh();
   };
 
   return (
