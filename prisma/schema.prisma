@@ -47,20 +47,24 @@ model Person {
   id              Int             @id @default(autoincrement())
   first_name      String
   last_name       String
-  email           String          @unique
-  phone           String
+  email           String?         
+  phone           String?
   business        Business?       @relation(fields: [businessId], references: [id])
-  businessId      Int
+  businessId      Int?
   tags            Tag[]           @relation("PersonTags")
   tasks           Task[]          @relation("PersonTasks")
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
 model Business {
   id              Int             @id @default(autoincrement())
   name            String          @unique
-  email           String          @unique
+  email           String?         
   categories      Category[]      @relation("BusinessCategories")
   people          Person[]
   tags            Tag[]           @relation("BusinessTags")
   tasks           Task[]          @relation("BusinessTasks")
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
