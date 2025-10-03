@@ -20,14 +20,16 @@ const TagsTable = ({ tags }: { tags: Record<string, string>[] }) => {
       method: "DELETE",
     });
 
-    if (res.ok) {
-      toast.success("Tag deleted successfully.");
-
-      router.push("/tags");
-      router.refresh();
-    } else {
-      toast.error("Failed to delete");
+    if (!res.ok && res.status === 401) {
+      toast.error("Unauthorized. Redirectering to login page...");
+      router.replace("/login");
+      return;
     }
+
+    toast.success("Tag deleted successfully.");
+
+    router.push("/tags");
+    router.refresh();
   };
 
   const mappedTags = useMemo(() => {
