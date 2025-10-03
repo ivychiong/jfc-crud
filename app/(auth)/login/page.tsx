@@ -29,14 +29,14 @@ const LoginPage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
+        credentials: "include",
       });
 
       const data = await res.json();
 
       if (res.ok) {
         toast.success("Login successful!");
-        localStorage.setItem("token", data.token);
-        router.push("/tasks");
+        router.replace("/tasks");
       } else {
         toast.error(data.error || "Login failed");
       }

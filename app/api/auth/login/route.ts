@@ -30,7 +30,18 @@ export async function POST(req: Request) {
       { expiresIn: "1h" }
     );
 
-    return NextResponse.json({ token, user }, { status: 200 });
+    const res = NextResponse.json({ user });
+
+    res.cookies.set({
+      name: "token",
+      value: token,
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60,
+      sameSite: "strict",
+    });
+
+    return res;
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
