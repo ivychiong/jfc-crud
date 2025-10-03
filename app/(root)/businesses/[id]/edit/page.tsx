@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import React from "react";
 
 import Card from "@/components/Card";
@@ -6,13 +7,27 @@ import ContactForm, { Field } from "@/components/forms/ContactForm";
 type Item = { id: number; name: string };
 
 const EditBusiness = async ({ params }: { params: { id: string } }) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
   const { id } = await params;
 
-  const [categoriesRes, tagsRes, businessRes] = await Promise.all([
-    fetch(`${process.env.BASE_URL}/api/categories`),
-    fetch(`${process.env.BASE_URL}/api/tags`),
-    fetch(`${process.env.BASE_URL}/api/businesses/${id}`),
-  ]);
+  const categoriesRes = await fetch(`${process.env.BASE_URL}/api/categories`, {
+    headers: { cookie: `token=${token}` },
+    cache: "no-store",
+  });
+
+  const tagsRes = await fetch(`${process.env.BASE_URL}/api/tags`, {
+    headers: { cookie: `token=${token}` },
+    cache: "no-store",
+  });
+
+  const businessRes = await fetch(
+    `${process.env.BASE_URL}/api/businesses/${id}`,
+    {
+      headers: { cookie: `token=${token}` },
+      cache: "no-store",
+    }
+  );
 
   if (!categoriesRes.ok || !tagsRes.ok || !businessRes.ok) {
     throw new Error("Failed to fetch initial data");

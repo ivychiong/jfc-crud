@@ -1,15 +1,29 @@
+import { cookies } from "next/headers";
 import React from "react";
 
 import Card from "@/components/Card";
 import TaskForm from "@/components/forms/TaskForm";
 
 const BusinessPage = async ({ params }: { params: { id: string } }) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
   const { id } = await params;
 
-  const [businessRes, tasksRes] = await Promise.all([
-    fetch(`${process.env.BASE_URL}/api/businesses/${id}`),
-    fetch(`${process.env.BASE_URL}/api/businesses/${id}/tasks`),
-  ]);
+  const tasksRes = await fetch(
+    `${process.env.BASE_URL}/api/businesses/${id}/tasks`,
+    {
+      headers: { cookie: `token=${token}` },
+      cache: "no-store",
+    }
+  );
+
+  const businessRes = await fetch(
+    `${process.env.BASE_URL}/api/businesses/${id}`,
+    {
+      headers: { cookie: `token=${token}` },
+      cache: "no-store",
+    }
+  );
 
   if (!businessRes.ok || !tasksRes.ok) {
     throw new Error("Failed to fetch initial data");
