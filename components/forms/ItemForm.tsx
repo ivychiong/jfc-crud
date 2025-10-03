@@ -45,6 +45,10 @@ const ItemForm = ({
       });
 
       if (!res.ok) {
+        if (res.status === 401) {
+          toast.error("Unauthorized. Redirectering to login page...");
+          router.push("/login");
+        }
         const data = await res.json();
         throw new Error(data.error || "Something went wrong");
       }
@@ -57,9 +61,7 @@ const ItemForm = ({
       router.refresh();
       router.push(route);
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Something went wrong";
-      toast.error(`Error: ${errorMessage}`);
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -75,13 +77,15 @@ const ItemForm = ({
       method: "DELETE",
     });
 
-    if (res.ok) {
-      toast.success(`${label} deleted successfully.`);
-      router.push(route);
-      router.refresh();
-    } else {
-      toast.error(`Failed to delete ${label}.`);
+    if (!res.ok && res.status === 401) {
+      toast.error("Unauthorized. Redirectering to login page...");
+      router.replace("/login");
+      return;
     }
+
+    toast.success(`${label} deleted successfully.`);
+    router.push(route);
+    router.refresh();
   };
 
   const actionTitle = action === "ADD" ? "Add New" : "Update";

@@ -24,14 +24,16 @@ const CategoriesTable = ({
       method: "DELETE",
     });
 
-    if (res.ok) {
-      toast.success("Category deleted successfully.");
-
-      router.push("/categories");
-      router.refresh();
-    } else {
-      toast.error("Failed to delete");
+    if (!res.ok && res.status === 401) {
+      toast.error("Unauthorized. Redirectering to login page...");
+      router.replace("/login");
+      return;
     }
+
+    toast.success("Category deleted successfully.");
+
+    router.push("/categories");
+    router.refresh();
   };
 
   const mappedCategories = useMemo(() => {
@@ -54,7 +56,6 @@ const CategoriesTable = ({
 
       <ListTable
         items={mappedCategories}
-        label="Category"
         route="/categories"
         onDelete={handleDelete}
         headers={["Category Name"]}
