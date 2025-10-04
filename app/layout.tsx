@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import React from "react";
 
+// eslint-disable-next-line import/order
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
+import { UserProvider } from "@/provider/UserProvider";
 
 const figtree = localFont({
   src: "./fonts/FigtreeVF.ttf",
@@ -26,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${figtree.variable} antialiased`}>
-        {children}
+        <UserProvider>{children}</UserProvider>
         <Toaster position="top-right" richColors />
       </body>
     </html>

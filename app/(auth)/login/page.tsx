@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import AuthForm from "@/components/forms/AuthForm";
 import { LoginSchema } from "@/lib/validation";
+import { useUser } from "@/provider/UserProvider";
 
 const defaultValues = {
   email: "",
@@ -17,6 +18,8 @@ const defaultValues = {
 
 const LoginPage = () => {
   const router = useRouter();
+  const { setUser } = useUser();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues,
@@ -34,7 +37,8 @@ const LoginPage = () => {
 
       const data = await res.json();
 
-      if (res.ok) {
+      if (res.ok && data) {
+        setUser({ name: data.user.name, email: data.user.email });
         toast.success("Login successful!");
         router.replace("/tasks");
       } else {

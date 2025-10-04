@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 import {
@@ -13,11 +13,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { navLinks } from "@/constants/links";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/provider/UserProvider";
 
 const NavigationLinks = () => {
+  const { user, setUser } = useUser();
   const pathName = usePathname();
+  const router = useRouter();
+
   const mainLinks = navLinks.filter((link) => link.label !== "User");
   const userLink = navLinks.find((link) => link.label === "User");
+
+  const handleLogout = async () => {
+    const res = await fetch("/api/auth/logout", { method: "POST" });
+    const data = await res.json();
+
+    if (res.ok) {
+      setUser(null);
+      router.push("/login");
+    } else {
+      alert(data.error || "Logout failed");
+    }
+  };
 
   return (
     <div className="flex items-center gap-6 w-full max-sm:hidden h-18 font-medium text-md">
@@ -66,9 +82,9 @@ const NavigationLinks = () => {
 
       {userLink && (
         <div className="ml-auto h-full flex items-center">
-          <DropdownMenu key={userLink.label}>
+          <DropdownMenu key={user?.name || userLink.label}>
             <DropdownMenuTrigger className="flex items-center h-full px-2 text-gray-700 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition cursor-pointer">
-              {userLink.label}
+              {user?.name || userLink.label}
               <Image
                 src="/icons/chevron-down.svg"
                 alt="Dropdown Icon"
@@ -78,15 +94,25 @@ const NavigationLinks = () => {
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-md">
-              {userLink?.dropdown?.map((item) => (
-                <DropdownMenuItem
-                  key={item.href}
-                  asChild
-                  className="cursor-pointer"
-                >
-                  <Link href={item.href}>{item.label}</Link>
-                </DropdownMenuItem>
-              ))}
+              {userLink?.dropdown?.map((item) =>
+                item.label === "Logout" ? (
+                  <DropdownMenuItem
+                    key={item.href}
+                    className="cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem
+                    key={item.href}
+                    asChild
+                    className="cursor-pointer"
+                  >
+                    <Link href={item.href}>{item.label}</Link>
+                  </DropdownMenuItem>
+                )
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

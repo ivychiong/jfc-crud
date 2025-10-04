@@ -8,6 +8,7 @@ interface TextInputProps {
   name: string;
   type?: string;
   value: string;
+  required?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -17,12 +18,14 @@ const TextInput = ({
   type = "text",
   value,
   onChange,
+  required = false,
 }: TextInputProps) => (
   <div className="w-full md:w-1/2 px-2 mb-4">
     <label htmlFor={name} className="block mb-1 font-medium">
       {label}
     </label>
     <Input
+      required={required}
       id={name}
       type={type}
       name={name}
