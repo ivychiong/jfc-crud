@@ -55,13 +55,16 @@ const EditPerson = async ({ params }: { params: { id: string } }) => {
       type: "dropdown",
       options: businessOptions,
     },
-    {
+  ];
+
+  if (tagOptions.length) {
+    contactFormFields.push({
       name: "tags",
       label: "Tags",
       type: "checkbox",
       options: tagOptions,
-    },
-  ];
+    });
+  }
 
   const defaultValues = {
     firstName: person.first_name || "",

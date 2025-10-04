@@ -40,19 +40,25 @@ const CreateBusiness = async () => {
   const contactFormFields: Field[] = [
     { name: "businessName", label: "Business Name", type: "text" },
     { name: "contactEmail", label: "Contact Email", type: "email" },
-    {
+  ];
+
+  if (categoryOptions.length) {
+    contactFormFields.push({
       name: "categories",
       label: "Category",
       type: "checkbox",
       options: categoryOptions,
-    },
-    {
+    });
+  }
+
+  if (tagOptions.length) {
+    contactFormFields.push({
       name: "tags",
       label: "Tags",
       type: "checkbox",
       options: tagOptions,
-    },
-  ];
+    });
+  }
 
   return (
     <Card>

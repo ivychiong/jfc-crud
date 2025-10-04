@@ -48,13 +48,16 @@ const CreatePerson = async () => {
       type: "dropdown",
       options: businessOptions,
     },
-    {
+  ];
+
+  if (tagOptions.length) {
+    contactFormFields.push({
       name: "tags",
       label: "Tags",
       type: "checkbox",
       options: tagOptions,
-    },
-  ];
+    });
+  }
 
   return (
     <Card>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Table,
   TableHeader,
@@ -12,6 +12,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 interface ListTableProps {
   items: Record<string, string | number>[];
@@ -28,6 +29,8 @@ const ListTable = ({
   headers,
   hideActions = false,
 }: ListTableProps) => {
+  const hasItems = items && items.length > 0;
+
   return (
     <Table className="mt-4">
       <TableHeader>
@@ -35,45 +38,76 @@ const ListTable = ({
           {headers.map((header) => (
             <TableHead key={header}>{header}</TableHead>
           ))}
-          <TableHead className="text-right">Actions</TableHead>
+          {!hideActions && (
+            <TableHead className="text-right">Actions</TableHead>
+          )}
         </TableRow>
       </TableHeader>
+
       <TableBody>
-        {items.map((item) => (
-          <TableRow key={item.id}>
-            {headers.map((header) => {
-              if (
-                (header.toLowerCase() === "name" ||
-                  header.toLowerCase() === "business name") &&
-                (route === "/people" || route === "/businesses")
-              ) {
-                return (
-                  <TableCell key={header}>
-                    <Link
-                      href={`${route}/${item.id}/show`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      {item[header]}
+        {hasItems ? (
+          items.map((item) => {
+            const id = item.id;
+
+            return (
+              <TableRow key={id}>
+                {headers.map((header) => {
+                  const headerKey = header.toLowerCase();
+                  const cellValue = item[header] ?? "-";
+
+                  if (
+                    (headerKey === "name" || headerKey === "business name") &&
+                    route &&
+                    (route === "/people" || route === "/businesses")
+                  ) {
+                    return (
+                      <TableCell key={header}>
+                        <Link
+                          href={`${route}/${id}/show`}
+                          className="text-blue-600 hover:underline"
+                        >
+                          {cellValue}
+                        </Link>
+                      </TableCell>
+                    );
+                  }
+
+                  return <TableCell key={header}>{cellValue}</TableCell>;
+                })}
+
+                {!hideActions && (
+                  <TableCell className="text-right flex justify-end gap-2">
+                    <Link href={`${route}/${id}/edit`}>
+                      <Button
+                        size="sm"
+                        className={cn(buttonVariants({ variant: "outline" }))}
+                      >
+                        Edit
+                      </Button>
                     </Link>
+
+                    <Button
+                      size="sm"
+                      className={cn(buttonVariants({ variant: "outline" }))}
+                      onClick={() => onDelete(id)}
+                    >
+                      Delete
+                    </Button>
                   </TableCell>
-                );
-              }
-
-              return <TableCell key={header}>{item[header]}</TableCell>;
-            })}
-            {!hideActions && (
-              <TableCell className="text-right flex justify-end gap-2">
-                <Link href={`${route}/${item.id}/edit`}>
-                  <Button size="sm" variant="outline">
-                    Edit
-                  </Button>
-                </Link>
-
-                <Button onClick={() => onDelete(item.id)}>Delete</Button>
-              </TableCell>
-            )}
+                )}
+              </TableRow>
+            );
+          })
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={hideActions ? headers.length : headers.length + 1}
+              className="h-24 text-center text-gray-500"
+            >
+              No results found.
+            </TableCell>
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

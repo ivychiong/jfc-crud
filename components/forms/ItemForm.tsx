@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 interface ItemFormProps {
   label: string;
@@ -25,14 +26,14 @@ const ItemForm = ({
   defaultValue = "",
 }: ItemFormProps) => {
   const router = useRouter();
-
   const [name, setName] = useState(defaultValue);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    if (!name.trim()) return toast.error(`${label} name cannot be empty.`);
 
+    setLoading(true);
     try {
       const url = action === "ADD" ? `/api${route}` : `/api${route}/${id}`;
       const method = action === "ADD" ? "POST" : "PATCH";
@@ -44,24 +45,26 @@ const ItemForm = ({
         cache: "no-store",
       });
 
-      if (!res.ok) {
-        if (res.status === 401) {
-          toast.error("Unauthorized. Redirectering to login page...");
-          router.push("/login");
-        }
-        const data = await res.json();
-        throw new Error(data.error || "Something went wrong");
+      if (res.status === 401) {
+        toast.error("Unauthorized. Redirecting to login page...");
+        router.push("/login");
+        return;
       }
 
-      setName("");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
+
       toast.success(
         `${label} ${action === "ADD" ? "created" : "updated"} successfully!`
       );
-
+      setName("");
       router.refresh();
       router.push(route);
     } catch (err: unknown) {
       console.error(err);
+      toast.error((err as Error).message || "Unexpected error occurred.");
     } finally {
       setLoading(false);
     }
@@ -73,25 +76,39 @@ const ItemForm = ({
     );
     if (!confirmed) return;
 
-    const res = await fetch(`/api${route}/${id}`, {
-      method: "DELETE",
-    });
+    setLoading(true);
+    try {
+      const res = await fetch(`/api${route}/${id}`, {
+        method: "DELETE",
+      });
 
-    if (!res.ok && res.status === 401) {
-      toast.error("Unauthorized. Redirectering to login page...");
-      router.replace("/login");
-      return;
+      if (res.status === 401) {
+        toast.error("Unauthorized. Redirecting to login page...");
+        router.replace("/login");
+        return;
+      }
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to delete item.");
+      }
+
+      toast.success(`${label} deleted successfully.`);
+      router.push(route);
+      router.refresh();
+    } catch (err: unknown) {
+      console.error(err);
+      toast.error((err as Error).message || "Unexpected error occurred.");
+    } finally {
+      setLoading(false);
     }
-
-    toast.success(`${label} deleted successfully.`);
-    router.push(route);
-    router.refresh();
   };
 
   const actionTitle = action === "ADD" ? "Add New" : "Update";
+
   return (
     <>
-      <p>{`${actionTitle} ${label}`}</p>
+      <p className="text-lg font-semibold">{`${actionTitle} ${label}`}</p>
       <form onSubmit={handleSubmit}>
         <div className="space-y-3 flex flex-col mt-6">
           <Label htmlFor={label.toLowerCase()}>{`${label} Name`}</Label>
@@ -102,27 +119,40 @@ const ItemForm = ({
             onChange={(e) => setName(e.target.value)}
             id={label.toLowerCase()}
             className="max-w-sm border border-gray-300 focus:border-2 focus:border-blue-800 !ring-0"
+            disabled={loading}
           />
         </div>
+
         <div className="mt-6 flex justify-end gap-3">
-          <Button className="btn-secondary" asChild disabled={loading}>
+          <Button
+            className={cn(buttonVariants({ variant: "secondary" }))}
+            asChild
+            disabled={loading}
+          >
             <Link href={route}>Cancel</Link>
           </Button>
+
           <Button
             type="submit"
-            className="btn-primary"
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "bg-blue-600 hover:bg-blue-700 text-white"
+            )}
             disabled={loading}
-          >{`${actionTitle} ${label}`}</Button>
+          >
+            {loading ? "Processing..." : `${actionTitle} ${label}`}
+          </Button>
         </div>
+
         {action === "EDIT" && (
-          <div>
+          <div className="mt-4">
             <Button
               type="button"
-              className="btn-warning"
-              disabled={loading}
               onClick={handleDelete}
+              className={cn(buttonVariants({ variant: "outline" }))}
+              disabled={loading}
             >
-              DELETE
+              {loading ? "Deleting..." : "Delete"}
             </Button>
           </div>
         )}

@@ -50,14 +50,25 @@ const EditBusiness = async ({ params }: { params: { id: string } }) => {
   const contactFormFields: Field[] = [
     { name: "businessName", label: "Business Name", type: "text" },
     { name: "contactEmail", label: "Contact Email", type: "email" },
-    {
+  ];
+
+  if (categoryOptions.length) {
+    contactFormFields.push({
       name: "categories",
       label: "Categories",
       type: "checkbox",
       options: categoryOptions,
-    },
-    { name: "tags", label: "Tags", type: "checkbox", options: tagOptions },
-  ];
+    });
+  }
+
+  if (tagOptions.length) {
+    contactFormFields.push({
+      name: "tags",
+      label: "Tags",
+      type: "checkbox",
+      options: tagOptions,
+    });
+  }
 
   const defaultValues = {
     businessName: business.name,
