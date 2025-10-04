@@ -37,6 +37,7 @@ const AuthForm = <T extends FieldValues>({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {Object.keys(defaultValues).map((fieldName) => {
+          if (fieldName === "rememberMe") return null;
           return (
             <FormField
               key={fieldName}
@@ -68,10 +69,24 @@ const AuthForm = <T extends FieldValues>({
 
         {formType === "LOGIN" && (
           <div className="flex -mt-4">
-            <div className="flex items-center gap-2">
-              <Checkbox id="rememberMe" />
-              <Label htmlFor="rememberMe">Remember me</Label>
-            </div>
+            <FormField
+              control={form.control}
+              name={"rememberMe" as Path<T>}
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-2 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      id="rememberMe"
+                      checked={!!field.value}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked === true)
+                      }
+                    />
+                  </FormControl>
+                  <Label htmlFor="rememberMe">Remember me</Label>
+                </FormItem>
+              )}
+            />
             <Link href="/forgot-password" className="ml-auto underline text-sm">
               Forgot password?
             </Link>

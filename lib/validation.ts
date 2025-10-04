@@ -9,6 +9,7 @@ export const LoginSchema = z.object({
     .string()
     .min(6, "Please input your password.")
     .max(100, "Password cannot exceed 100 characters."),
+  rememberMe: z.boolean().optional(),
 });
 
 export const RegisterSchema = z

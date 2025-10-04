@@ -14,6 +14,7 @@ import { useUser } from "@/provider/UserProvider";
 const defaultValues = {
   email: "",
   password: "",
+  rememberMe: false,
 };
 
 const LoginPage = () => {
