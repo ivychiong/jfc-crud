@@ -14,10 +14,24 @@ const NavigationBar = () => {
     "/categories": "Categories",
     "/tags/create": "Add Tag",
     "/tags": "Tags",
+    "/people": "People",
+    "/people/create": "Create Person",
+  };
+
+  const getRouteTitle = (pathname: string) => {
+    if (pathname.startsWith("/people/") && pathname.endsWith("/edit")) {
+      return "Edit Person";
+    }
+
+    if (pathname.startsWith("/profile") || pathname.endsWith("/show")) {
+      return `Profile`;
+    }
+
+    return routeTitleMap[pathname] || "Dashboard";
   };
 
   const title =
-    routeTitleMap[routeName] ||
+    getRouteTitle(routeName) ||
     routeName
       .split("/")
       .filter(Boolean)

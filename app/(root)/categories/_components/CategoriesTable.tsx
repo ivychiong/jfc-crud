@@ -46,11 +46,10 @@ const CategoriesTable = ({
   return (
     <Card>
       <div className="flex justify-end mb-4">
-        <Button
-          className="bg-blue-500 rounded-full text-white font-bold text-md"
-          asChild
-        >
-          <Link href={`/categories/create`}>Add Category</Link>
+        <Button className="btn-primary" asChild>
+          <Link href={`/categories/create`}>
+            <p>Add Category</p>
+          </Link>
         </Button>
       </div>
 

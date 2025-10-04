@@ -42,11 +42,10 @@ const TagsTable = ({ tags }: { tags: Record<string, string>[] }) => {
   return (
     <Card>
       <div className="flex justify-end mb-4">
-        <Button
-          className="bg-blue-500 rounded-full text-white font-bold text-md"
-          asChild
-        >
-          <Link href={`/tags/create`}>Add Tag</Link>
+        <Button className="btn-primary" asChild>
+          <Link href={`/tags/create`}>
+            <p>Add Tag</p>
+          </Link>
         </Button>
       </div>
 

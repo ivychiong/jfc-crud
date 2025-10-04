@@ -71,7 +71,9 @@ const ProfileInformation = () => {
         type="email"
         onChange={handleChange}
       />
-      <Button type="submit">Save</Button>
+      <Button type="submit" className="bg-gray-800 text-white ml-2 uppercase">
+        Save
+      </Button>
     </form>
   );
 };

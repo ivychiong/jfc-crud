@@ -1,6 +1,7 @@
 "use client";
 
 import { Task } from "@prisma/client";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
@@ -19,11 +20,11 @@ import { cn } from "@/lib/utils";
 
 const successButton = cn(
   buttonVariants({ variant: "default" }),
-  "bg-green-500 hover:bg-green-600 text-white"
+  "bg-green-500 hover:bg-green-600 text-white rounded-full"
 );
 const warningButton = cn(
   buttonVariants({ variant: "default" }),
-  "bg-yellow-500 hover:bg-yellow-600 text-white"
+  "bg-red-500 hover:bg-red-600 text-white rounded-full"
 );
 
 interface TasksTableProps {
@@ -74,31 +75,51 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
     <TableRow key={task.id}>
       <TableCell>{task.title}</TableCell>
       <TableCell>
-        {task.person
-          ? `${task.person.first_name} ${task.person.last_name}`
-          : task.business?.name || "-"}
+        {task.person ? (
+          <div className="flex gap-2">
+            <Image
+              src={"/icons/user.svg"}
+              width={20}
+              height={20}
+              alt="User icon"
+            />
+            {`${task.person.first_name} ${task.person.last_name}`}
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <Image
+              src={"/icons/building.svg"}
+              width={20}
+              height={20}
+              alt="Building icon"
+            />
+            {`${task.business?.name || "-"}`}
+          </div>
+        )}
       </TableCell>
-      <TableCell>{task.completed ? "Completed" : "Open"}</TableCell>
-      <TableCell className="text-right">
+      <TableCell className="text-center">
+        {task.completed ? "Completed" : "Open"}
+      </TableCell>
+      <TableCell className="text-center">
         <Button
           size="sm"
           className={cn(task.completed ? warningButton : successButton)}
           onClick={() => handleToggleStatus(task.id, task.completed)}
         >
-          {task.completed ? "Reopen" : "Mark Completed"}
+          {task.completed ? "Re-open" : "Mark Completed"}
         </Button>
       </TableCell>
     </TableRow>
   );
 
   const renderTasks = (list: TasksTableProps["tasks"]) => (
-    <Table>
+    <Table className="table">
       <TableHeader>
         <TableRow>
-          <TableHead>Task Name</TableHead>
-          <TableHead>For</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
+          <TableHead className="w-[30%]">Task Name</TableHead>
+          <TableHead className="w-[30%]">For</TableHead>
+          <TableHead className="text-center w-[20%]">Status</TableHead>
+          <TableHead className="text-center">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

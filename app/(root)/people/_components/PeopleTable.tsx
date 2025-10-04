@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
+import Tag from "@/components/Tag";
 import { Button } from "@/components/ui/button";
 
 type Person = {
@@ -29,7 +30,13 @@ const PeopleTable = ({ people }: { people: Person[] }) => {
       Email: p.email,
       Phone: p.phone || "-",
       Business: p?.business?.name || "-",
-      Tags: p?.tags.length > 0 ? p.tags.map((t) => t.name).join(", ") : "-",
+      Tags: (
+        <div className="flex flex-wrap gap-1">
+          {p?.tags.length > 0
+            ? p.tags.map((t) => <Tag key={t.name}>{t.name}</Tag>)
+            : "-"}
+        </div>
+      ),
     }));
   }, [people]);
 
@@ -56,10 +63,7 @@ const PeopleTable = ({ people }: { people: Person[] }) => {
   return (
     <Card>
       <div className="flex justify-end mb-4">
-        <Button
-          className="bg-blue-500 rounded-full text-white font-bold text-md"
-          asChild
-        >
+        <Button className="btn-primary" asChild>
           <Link href={`/people/create`}>Add Person</Link>
         </Button>
       </div>

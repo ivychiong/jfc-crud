@@ -5,10 +5,9 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 
 interface ItemFormProps {
   label: string;
@@ -124,22 +123,11 @@ const ItemForm = ({
         </div>
 
         <div className="mt-6 flex justify-end gap-3">
-          <Button
-            className={cn(buttonVariants({ variant: "secondary" }))}
-            asChild
-            disabled={loading}
-          >
+          <Button className="btn-secondary" asChild disabled={loading}>
             <Link href={route}>Cancel</Link>
           </Button>
 
-          <Button
-            type="submit"
-            className={cn(
-              buttonVariants({ variant: "default" }),
-              "bg-blue-600 hover:bg-blue-700 text-white"
-            )}
-            disabled={loading}
-          >
+          <Button type="submit" className="btn-primary" disabled={loading}>
             {loading ? "Processing..." : `${actionTitle} ${label}`}
           </Button>
         </div>
@@ -149,7 +137,7 @@ const ItemForm = ({
             <Button
               type="button"
               onClick={handleDelete}
-              className={cn(buttonVariants({ variant: "outline" }))}
+              className={"btn-warning"}
               disabled={loading}
             >
               {loading ? "Deleting..." : "Delete"}

@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
+import Tag from "@/components/Tag";
 import { Button } from "@/components/ui/button";
 
 interface Business {
@@ -25,11 +26,21 @@ const BusinessesTable = ({ businesses }: { businesses: Business[] }) => {
       id: b.id,
       "Business Name": b.name,
       Email: b.email,
-      Categories:
-        b?.categories.length > 0
-          ? b.categories.map((c) => c.name).join(", ")
-          : "-",
-      Tags: b?.tags.length > 0 ? b.tags.map((t) => t.name).join(", ") : "-",
+      Categories: (
+        <div className="flex flex-wrap gap-1">
+          {" "}
+          {b?.categories.length > 0
+            ? b.categories.map((b) => <Tag key={b.name}>{b.name}</Tag>)
+            : "-"}
+        </div>
+      ),
+      Tags: (
+        <div className="flex flex-wrap gap-1">
+          {b?.tags.length > 0
+            ? b.tags.map((b) => <Tag key={b.name}>{b.name}</Tag>)
+            : "-"}
+        </div>
+      ),
     }));
   }, [businesses]);
 
@@ -56,10 +67,7 @@ const BusinessesTable = ({ businesses }: { businesses: Business[] }) => {
   return (
     <Card>
       <div className="flex justify-end mb-4">
-        <Button
-          className="bg-blue-500 rounded-full text-white font-bold text-md"
-          asChild
-        >
+        <Button className="btn-primary" asChild>
           <Link href={`/businesses/create`}>Add Business</Link>
         </Button>
       </div>

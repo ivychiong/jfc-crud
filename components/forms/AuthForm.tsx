@@ -73,7 +73,7 @@ const AuthForm = <T extends FieldValues>({
               control={form.control}
               name={"rememberMe" as Path<T>}
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-2 space-y-0">
+                <FormItem className="flex flex-row items-center">
                   <FormControl>
                     <Checkbox
                       id="rememberMe"
@@ -93,7 +93,7 @@ const AuthForm = <T extends FieldValues>({
           </div>
         )}
 
-        <div className="flex justify-end gap-2 items-center">
+        <div className="flex justify-between gap-2 items-center">
           <Link
             href={formType === "LOGIN" ? "/register" : "/login"}
             className="text-sm underline"

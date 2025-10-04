@@ -28,27 +28,29 @@ const ProfilePage = () => {
   return (
     <>
       <Card>
-        <p>Profile Information</p>
-        <p>Update your account&apos;s profile information and email address.</p>
+        <h3 className="title">Profile Information</h3>
+        <p className="description mb-4">
+          Update your account&apos;s profile information and email address.
+        </p>
         <ProfileInformation />
       </Card>
       <Card>
-        <p>Update Password</p>
-        <p>
+        <h3 className="title">Update Password</h3>
+        <p className="description mb-2">
           Ensure your account is using a long, random password to stay secure.
         </p>
         <UpdatePassword />
       </Card>
       <Card>
-        <p>Delete Account</p>
-        <p>
+        <h3 className="title">Delete Account</h3>
+        <p className="description mb-2 w-[40%]">
           Once your account is deleted, all of its resources and data will be
           permanently deleted. Before deleting your account, please download any
           data or information that you wish to retain.
         </p>
         <div>
           <Button
-            className="btn-warning uppercase"
+            className="mt-2 btn-warning uppercase !rounded-md"
             onClick={handleDeleteAccount}
           >
             Delete Account

@@ -83,7 +83,11 @@ const UpdatePassword = () => {
         value={formData.confirmPassword}
         onChange={handleChange}
       />
-      <Button type="submit" disabled={loading}>
+      <Button
+        type="submit"
+        disabled={loading}
+        className="bg-gray-800 text-white ml-2 uppercase"
+      >
         {loading ? "Saving..." : "Save"}
       </Button>
     </form>

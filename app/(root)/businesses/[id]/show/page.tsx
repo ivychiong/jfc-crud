@@ -3,6 +3,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import TaskForm from "@/components/forms/TaskForm";
+import Tag from "@/components/Tag";
 
 const BusinessPage = async ({ params }: { params: { id: string } }) => {
   const cookieStore = await cookies();
@@ -46,10 +47,15 @@ const BusinessPage = async ({ params }: { params: { id: string } }) => {
     },
     {
       label: "Categories",
-      value:
-        business?.tags.length > 0
-          ? business?.tags?.map((t: { name: string }) => t.name).join(", ")
-          : "-",
+      value: (
+        <div className="flex gap-1 flex-wrap">
+          {business?.tags.length > 0
+            ? business?.tags?.map((t: { name: string }) => (
+                <Tag key={t.name}>{t.name}</Tag>
+              ))
+            : "-"}
+        </div>
+      ),
     },
   ];
 
@@ -59,7 +65,7 @@ const BusinessPage = async ({ params }: { params: { id: string } }) => {
         <div className="flex-1">
           <p className="mb-2 font-bold">Business Details</p>
           {businessData.map((data) => (
-            <div key={data.label} className="flex gap-2">
+            <div key={data.label} className="flex gap-1 mb-2">
               <p className="font-medium">{data.label}</p>:<p>{data.value}</p>
             </div>
           ))}

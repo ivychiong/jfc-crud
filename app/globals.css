@@ -22,17 +22,63 @@ body {
 }
 
 @utility btn-primary {
-  @apply btn bg-blue-500  hover:bg-blue-600;
+  @apply btn bg-blue-500  hover:bg-blue-600 p-2 !text-base !font-semibold;
+
+  p {
+    @apply text-base font-semibold;
+  }
 }
 
 @utility btn-secondary {
-  @apply btn bg-gray-400  hover:bg-gray-500;
+  @apply btn bg-gray-400  hover:bg-gray-500 p-2 !text-base !font-semibold;
+
+  p {
+    @apply text-base font-semibold;
+  }
 }
 
 @utility btn-warning {
-  @apply btn bg-red-400  hover:bg-red-500;
+  @apply btn bg-red-500  hover:bg-red-600 p-2 !text-base !font-semibold;
+
+  p {
+    @apply text-base font-semibold;
+  }
 }
 
 @utility btn-success {
   @apply btn bg-green-400  hover:bg-green-500;
+}
+
+@utility title {
+  @apply text-lg font-semibold;
+}
+
+@utility description {
+  @apply text-sm font-light;
+}
+
+.table {
+  @apply w-full rounded-2xl;
+
+  thead {
+    @apply bg-blue-300 h-14 text-base;
+
+    th {
+      @apply font-bold border-r border-white pl-6;
+    }
+
+    tr {
+      @apply border-none;
+    }
+  }
+
+  tbody {
+    tr {
+      @apply border-none text-base truncate;
+    }
+
+    td {
+      @apply pl-6;
+    }
+  }
 }

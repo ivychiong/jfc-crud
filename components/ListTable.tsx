@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 
 interface ListTableProps {
-  items: Record<string, string | number>[];
+  items: Record<string, string | number | React.ReactNode>[];
   onDelete: (id: string | number) => void;
   route?: string;
   headers: string[];
@@ -32,14 +32,14 @@ const ListTable = ({
   const hasItems = items && items.length > 0;
 
   return (
-    <Table className="mt-4">
+    <Table className="table mt-4">
       <TableHeader>
         <TableRow>
           {headers.map((header) => (
             <TableHead key={header}>{header}</TableHead>
           ))}
           {!hideActions && (
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-center">Actions</TableHead>
           )}
         </TableRow>
       </TableHeader>
@@ -50,7 +50,7 @@ const ListTable = ({
             const id = item.id;
 
             return (
-              <TableRow key={id}>
+              <TableRow key={id as string}>
                 {headers.map((header) => {
                   const headerKey = header.toLowerCase();
                   const cellValue = item[header] ?? "-";
@@ -76,11 +76,14 @@ const ListTable = ({
                 })}
 
                 {!hideActions && (
-                  <TableCell className="text-right flex justify-end gap-2">
+                  <TableCell className=" flex justify-center gap-4">
                     <Link href={`${route}/${id}/edit`}>
                       <Button
                         size="sm"
-                        className={cn(buttonVariants({ variant: "outline" }))}
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "hover:bg-gray-200"
+                        )}
                       >
                         Edit
                       </Button>
@@ -88,8 +91,11 @@ const ListTable = ({
 
                     <Button
                       size="sm"
-                      className={cn(buttonVariants({ variant: "outline" }))}
-                      onClick={() => onDelete(id)}
+                      className={cn(
+                        buttonVariants({ variant: "outline" }),
+                        "hover:bg-gray-200"
+                      )}
+                      onClick={() => onDelete(id as string)}
                     >
                       Delete
                     </Button>
