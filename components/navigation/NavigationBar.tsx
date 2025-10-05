@@ -5,22 +5,38 @@ import React from "react";
 
 import NavigationLinks from "./NavigationLinks";
 import Header from "../Header";
+import MobileNavigation from "./MobileNavigation";
 
 const NavigationBar = () => {
   const routeName = usePathname();
 
   const routeTitleMap: Record<string, string> = {
+    "/tasks": "Tasks",
     "/categories/create": "Add Category",
     "/categories": "Categories",
     "/tags/create": "Add Tag",
     "/tags": "Tags",
     "/people": "People",
     "/people/create": "Create Person",
+    "/businesses": "Businesses",
+    "/businesses/create": "Create Business",
   };
 
   const getRouteTitle = (pathname: string) => {
     if (pathname.startsWith("/people/") && pathname.endsWith("/edit")) {
       return "Edit Person";
+    }
+
+    if (pathname.startsWith("/businesses/") && pathname.endsWith("/edit")) {
+      return "Edit Business";
+    }
+
+    if (pathname.startsWith("/categories/") && pathname.endsWith("/edit")) {
+      return "Edit Category";
+    }
+
+    if (pathname.startsWith("/tags/") && pathname.endsWith("/edit")) {
+      return "Edit Tag";
     }
 
     if (pathname.startsWith("/profile") || pathname.endsWith("/show")) {
@@ -40,7 +56,7 @@ const NavigationBar = () => {
 
   return (
     <nav>
-      <div className="bg-white w-full px-25 border-b border-gray-200 flex items-center gap-8 h-18">
+      <div className="bg-white w-full  px-10 sm:px-25 border-b border-gray-200 flex items-center gap-8 h-18">
         <Link href="/tasks">
           <Image
             src="/images/jfc-logo.png"
@@ -50,6 +66,7 @@ const NavigationBar = () => {
           />
         </Link>
         <NavigationLinks />
+        <MobileNavigation />
       </div>
       {routeName && <Header headerName={title || ""} />}
     </nav>

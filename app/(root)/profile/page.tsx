@@ -43,7 +43,7 @@ const ProfilePage = () => {
       </Card>
       <Card>
         <h3 className="title">Delete Account</h3>
-        <p className="description mb-2 w-[40%]">
+        <p className="description mb-2 xl:w-[50%]">
           Once your account is deleted, all of its resources and data will be
           permanently deleted. Before deleting your account, please download any
           data or information that you wish to retain.

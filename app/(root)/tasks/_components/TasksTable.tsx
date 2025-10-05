@@ -73,8 +73,8 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
     };
   }) => (
     <TableRow key={task.id}>
-      <TableCell>{task.title}</TableCell>
-      <TableCell>
+      <TableCell className="w-[30%]">{task.title}</TableCell>
+      <TableCell className="w-[30%]">
         {task.person ? (
           <div className="flex gap-2">
             <Image
@@ -97,7 +97,7 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
           </div>
         )}
       </TableCell>
-      <TableCell className="text-center">
+      <TableCell className="text-center w-[20%]">
         {task.completed ? "Completed" : "Open"}
       </TableCell>
       <TableCell className="text-center">
@@ -127,7 +127,7 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
           list.map((task) => <TaskRow key={task.id} task={task} />)
         ) : (
           <TableRow>
-            <TableCell colSpan={4} className="h-24 text-center text-gray-500">
+            <TableCell colSpan={1} className="h-24 text-center text-gray-500 ">
               No results.
             </TableCell>
           </TableRow>
