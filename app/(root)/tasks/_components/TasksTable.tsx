@@ -127,7 +127,7 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
           list.map((task) => <TaskRow key={task.id} task={task} />)
         ) : (
           <TableRow>
-            <TableCell colSpan={1} className="h-24 text-center text-gray-500 ">
+            <TableCell colSpan={4} className="h-24 text-center text-gray-500 ">
               No results.
             </TableCell>
           </TableRow>
