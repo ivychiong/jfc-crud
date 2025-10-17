@@ -12,7 +12,15 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   {
-    ignores: ["components/ui/**/*"],
+    ignores: [
+      "components/ui/**/*",
+      "**/generated/**",
+      "**/generated/prisma/**",
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+      "next-env.d.ts",
+    ],
   },
   ...compat.extends(
     "next/core-web-vitals",
@@ -33,9 +41,7 @@ const eslintConfig = [
             "index",
             "object",
           ],
-
           "newlines-between": "always",
-
           pathGroups: [
             {
               pattern: "@app/**",
@@ -43,9 +49,7 @@ const eslintConfig = [
               position: "after",
             },
           ],
-
           pathGroupsExcludedImportTypes: ["builtin"],
-
           alphabetize: {
             order: "asc",
             caseInsensitive: true,
