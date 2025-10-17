@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const cookieStore = await cookies();
@@ -24,7 +24,7 @@ export async function PATCH(
 
     const { completed } = await req.json();
 
-    const { id } = await params;
+    const { id } = await context.params;
     const updated = await prisma.task.update({
       where: { id: Number(id) },
       data: { completed },

@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
@@ -24,8 +24,9 @@ export async function PATCH(
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
+    const { id } = await context.params;
     const updated = await prisma.tag.update({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
       data: { name },
     });
 
@@ -39,8 +40,8 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
@@ -53,7 +54,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = await context.params;
     await prisma.tag.delete({
       where: { id: Number(id) },
     });

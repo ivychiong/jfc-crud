@@ -1,13 +1,12 @@
 import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-interface Params {
-  params: { id: string };
-}
-
-export async function GET(req: Request, { params }: Params) {
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
     if (!token)
@@ -19,7 +18,7 @@ export async function GET(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = await context.params;
     const personId = Number(id);
 
     if (isNaN(personId)) {
@@ -47,7 +46,10 @@ export async function GET(req: Request, { params }: Params) {
   }
 }
 
-export async function PATCH(req: Request, { params }: Params) {
+export async function PATCH(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
     if (!token)
@@ -59,7 +61,7 @@ export async function PATCH(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = await context.params;
     const personId = Number(id);
 
     const body = await req.json();
@@ -90,7 +92,10 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 }
 
-export async function DELETE(req: Request, { params }: Params) {
+export async function DELETE(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
     if (!token)
@@ -102,7 +107,7 @@ export async function DELETE(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = await context.params;
     const personId = Number(id);
 
     await prisma.person.delete({

@@ -1,13 +1,12 @@
 import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-interface Params {
-  params: { id: string };
-}
-
-export async function GET(req: Request, { params }: Params) {
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
     if (!token)
@@ -19,30 +18,24 @@ export async function GET(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = await context.params;
     const businessId = Number(id);
-
-    if (isNaN(businessId)) {
+    if (isNaN(businessId))
       return NextResponse.json(
         { error: "Invalid business ID" },
         { status: 400 }
       );
-    }
 
     const business = await prisma.business.findUnique({
       where: { id: businessId },
-      include: {
-        categories: true,
-        tags: true,
-      },
+      include: { categories: true, tags: true },
     });
 
-    if (!business) {
+    if (!business)
       return NextResponse.json(
         { error: "Business not found" },
         { status: 404 }
       );
-    }
 
     return NextResponse.json(business);
   } catch {
@@ -53,7 +46,10 @@ export async function GET(req: Request, { params }: Params) {
   }
 }
 
-export async function DELETE(req: Request, { params }: Params) {
+export async function DELETE(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
     if (!token)
@@ -65,12 +61,15 @@ export async function DELETE(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = await context.params;
     const businessId = Number(id);
+    if (isNaN(businessId))
+      return NextResponse.json(
+        { error: "Invalid business ID" },
+        { status: 400 }
+      );
 
-    await prisma.business.delete({
-      where: { id: businessId },
-    });
+    await prisma.business.delete({ where: { id: businessId } });
 
     return NextResponse.json(
       { message: "Business deleted successfully" },
@@ -78,13 +77,16 @@ export async function DELETE(req: Request, { params }: Params) {
     );
   } catch {
     return NextResponse.json(
-      { error: "Failed to delete person" },
+      { error: "Failed to delete business" },
       { status: 500 }
     );
   }
 }
 
-export async function PATCH(req: Request, { params }: Params) {
+export async function PATCH(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   const token = req.headers.get("cookie")?.split("token=")?.[1];
   if (!token)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -95,12 +97,10 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
-  const { id } = await params;
+  const { id } = await context.params;
   const businessId = Number(id);
-
-  if (isNaN(businessId)) {
+  if (isNaN(businessId))
     return NextResponse.json({ error: "Invalid business ID" }, { status: 400 });
-  }
 
   const body = await req.json();
   const { businessName, contactEmail, categories, tags } = body;
@@ -123,7 +123,7 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json(updatedBusiness);
   } catch {
     return NextResponse.json(
-      { error: "Failed to delete business" },
+      { error: "Failed to update business" },
       { status: 500 }
     );
   }

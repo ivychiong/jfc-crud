@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = req.headers.get("cookie")?.split("token=")?.[1];
@@ -18,7 +18,7 @@ export async function GET(
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = await context.params;
     const businessId = Number(id);
 
     const tasks = await prisma.task.findMany({ where: { businessId } });
