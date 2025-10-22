@@ -18,13 +18,10 @@ const BusinessPage = async ({ params }: { params: Params }) => {
     cache: "no-store",
   });
 
-  const businessRes = await fetch(
-    `${process.env.BASE_URL}/api/businesses/${id}`,
-    {
-      headers: { cookie: `token=${token}` },
-      cache: "no-store",
-    }
-  );
+  const businessRes = await fetch(`${getBaseUrl()}/api/businesses/${id}`, {
+    headers: { cookie: `token=${token}` },
+    cache: "no-store",
+  });
 
   if (!businessRes.ok || !tasksRes.ok) {
     throw new Error("Failed to fetch initial data");
