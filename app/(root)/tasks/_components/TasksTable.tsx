@@ -16,7 +16,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+import { cn, getBaseUrl } from "@/lib/utils";
 
 const successButton = cn(
   buttonVariants({ variant: "default" }),
@@ -41,7 +41,7 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
   const completedTasks = tasks?.filter((t) => t.completed);
 
   const handleToggleStatus = async (id: number, completed: boolean) => {
-    const res = await fetch(`/api/tasks/${id}`, {
+    const res = await fetch(`${getBaseUrl()}/api/tasks/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ completed: !completed }),

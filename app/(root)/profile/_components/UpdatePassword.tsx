@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import TextInput from "@/components/forms/TextInput";
 import { Button } from "@/components/ui/button";
+import { getBaseUrl } from "@/lib/utils";
 
 const UpdatePassword = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ const UpdatePassword = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/user/password", {
+      const res = await fetch(`${getBaseUrl()}/api/auth/user/password`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

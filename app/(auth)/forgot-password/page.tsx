@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getBaseUrl } from "@/lib/utils";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ const ForgotPasswordPage = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/forgot-password", {
+      const res = await fetch(`${getBaseUrl()}/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

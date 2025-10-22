@@ -3,6 +3,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import ContactForm, { Field } from "@/components/forms/ContactForm";
+import { getBaseUrl } from "@/lib/utils";
 
 type Item = { id: number; name: string };
 
@@ -11,23 +12,20 @@ const EditBusiness = async ({ params }: { params: { id: string } }) => {
   const token = cookieStore.get("token")?.value;
   const { id } = await params;
 
-  const categoriesRes = await fetch(`${process.env.BASE_URL}/api/categories`, {
+  const categoriesRes = await fetch(`${getBaseUrl()}/api/categories`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });
 
-  const tagsRes = await fetch(`${process.env.BASE_URL}/api/tags`, {
+  const tagsRes = await fetch(`${getBaseUrl()}/api/tags`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });
 
-  const businessRes = await fetch(
-    `${process.env.BASE_URL}/api/businesses/${id}`,
-    {
-      headers: { cookie: `token=${token}` },
-      cache: "no-store",
-    }
-  );
+  const businessRes = await fetch(`${getBaseUrl()}/api/businesses/${id}`, {
+    headers: { cookie: `token=${token}` },
+    cache: "no-store",
+  });
 
   if (!categoriesRes.ok || !tagsRes.ok || !businessRes.ok) {
     throw new Error("Failed to fetch initial data");

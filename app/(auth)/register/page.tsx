@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import AuthForm from "@/components/forms/AuthForm";
+import { getBaseUrl } from "@/lib/utils";
 import { RegisterSchema } from "@/lib/validation";
 
 const defaultValues = {
@@ -31,7 +32,7 @@ const RegisterPage = () => {
   async function onSubmit(values: z.infer<typeof RegisterSchema>) {
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(`${getBaseUrl()}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

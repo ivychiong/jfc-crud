@@ -2,13 +2,15 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import { getBaseUrl } from "@/lib/utils";
+
 import { PeopleTable } from "./_components";
 
 const PeoplePage = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  const res = await fetch(`${process.env.BASE_URL}/api/people`, {
+  const res = await fetch(`${getBaseUrl()}/api/people`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });

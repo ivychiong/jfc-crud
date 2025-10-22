@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import TextInput from "@/components/forms/TextInput";
 import { Button } from "@/components/ui/button";
+import { getBaseUrl } from "@/lib/utils";
 import { User, useUser } from "@/provider/UserProvider";
 
 const ProfileInformation = () => {
@@ -13,7 +14,7 @@ const ProfileInformation = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch("/api/auth/user");
+      const res = await fetch(`${getBaseUrl()}/api/auth/user`);
       if (res.ok) {
         const data = await res.json();
         setUser(data.user);
@@ -36,7 +37,7 @@ const ProfileInformation = () => {
     e.preventDefault();
     if (!localUser) return;
 
-    const res = await fetch("/api/auth/user/", {
+    const res = await fetch(`${getBaseUrl()}/api/auth/user/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

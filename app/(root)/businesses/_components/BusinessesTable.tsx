@@ -9,6 +9,7 @@ import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
 import Tag from "@/components/Tag";
 import { Button } from "@/components/ui/button";
+import { getBaseUrl } from "@/lib/utils";
 
 interface Business {
   id: string;
@@ -48,7 +49,7 @@ const BusinessesTable = ({ businesses }: { businesses: Business[] }) => {
     const confirmed = confirm("Are you sure you want to delete this?");
     if (!confirmed) return;
 
-    const res = await fetch(`/api/businesses/${id}`, {
+    const res = await fetch(`${getBaseUrl()}/api/businesses/${id}`, {
       method: "DELETE",
     });
 

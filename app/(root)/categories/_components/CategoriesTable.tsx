@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
 import { Button } from "@/components/ui/button";
+import { getBaseUrl } from "@/lib/utils";
 
 const CategoriesTable = ({
   categories,
@@ -20,7 +21,7 @@ const CategoriesTable = ({
     const confirmed = confirm("Are you sure you want to delete this?");
     if (!confirmed) return;
 
-    const res = await fetch(`/api/categories/${id}`, {
+    const res = await fetch(`${getBaseUrl()}/api/categories/${id}`, {
       method: "DELETE",
     });
 

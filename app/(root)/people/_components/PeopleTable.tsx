@@ -9,6 +9,7 @@ import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
 import Tag from "@/components/Tag";
 import { Button } from "@/components/ui/button";
+import { getBaseUrl } from "@/lib/utils";
 
 type Person = {
   id: string | number;
@@ -44,7 +45,7 @@ const PeopleTable = ({ people }: { people: Person[] }) => {
     const confirmed = confirm("Are you sure you want to delete this?");
     if (!confirmed) return;
 
-    const res = await fetch(`/api/people/${id}`, {
+    const res = await fetch(`${getBaseUrl()}/api/people/${id}`, {
       method: "DELETE",
     });
 

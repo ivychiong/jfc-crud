@@ -4,6 +4,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import { Button } from "@/components/ui/button";
+import { getBaseUrl } from "@/lib/utils";
 
 import { ProfileInformation, UpdatePassword } from "./_components";
 
@@ -11,7 +12,7 @@ const ProfilePage = () => {
   const handleDeleteAccount = async () => {
     if (!confirm("Are you sure you want to delete your account?")) return;
 
-    const res = await fetch("/api/auth/user", {
+    const res = await fetch(`${getBaseUrl()}/api/auth/user`, {
       method: "DELETE",
     });
 

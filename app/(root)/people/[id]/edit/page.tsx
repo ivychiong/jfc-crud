@@ -4,6 +4,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import ContactForm, { Field } from "@/components/forms/ContactForm";
+import { getBaseUrl } from "@/lib/utils";
 
 type Item = { id: number; name: string };
 
@@ -12,17 +13,17 @@ const EditPerson = async ({ params }: { params: { id: string } }) => {
   const token = cookieStore.get("token")?.value;
   const { id } = await params;
 
-  const businessesRes = await fetch(`${process.env.BASE_URL}/api/businesses`, {
+  const businessesRes = await fetch(`${getBaseUrl()}/api/businesses`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });
 
-  const tagsRes = await fetch(`${process.env.BASE_URL}/api/tags`, {
+  const tagsRes = await fetch(`${getBaseUrl()}/api/tags`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });
 
-  const personRes = await fetch(`${process.env.BASE_URL}/api/people/${id}`, {
+  const personRes = await fetch(`${getBaseUrl()}/api/people/${id}`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });

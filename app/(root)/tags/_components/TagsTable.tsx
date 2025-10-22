@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import Card from "@/components/Card";
 import ListTable from "@/components/ListTable";
 import { Button } from "@/components/ui/button";
+import { getBaseUrl } from "@/lib/utils";
 
 const TagsTable = ({ tags }: { tags: Record<string, string>[] }) => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const TagsTable = ({ tags }: { tags: Record<string, string>[] }) => {
     const confirmed = confirm("Are you sure you want to delete this?");
     if (!confirmed) return;
 
-    const res = await fetch(`/api/tags/${id}`, {
+    const res = await fetch(`${getBaseUrl()}/api/tags/${id}`, {
       method: "DELETE",
     });
 

@@ -2,13 +2,15 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import { getBaseUrl } from "@/lib/utils";
+
 import { CategoriesTable } from "./_components";
 
 const CategoriesPage = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  const res = await fetch(`${process.env.BASE_URL}/api/categories`, {
+  const res = await fetch(`${getBaseUrl()}/api/categories`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });

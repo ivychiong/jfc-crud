@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { navLinks } from "@/constants/links";
+import { getBaseUrl } from "@/lib/utils";
 import { useUser } from "@/provider/UserProvider";
 
 const NavigationLinksMobile = () => {
@@ -22,7 +23,9 @@ const NavigationLinksMobile = () => {
   const userLink = navLinks.find((link) => link.label === "User");
 
   const handleLogout = async () => {
-    const res = await fetch("/api/auth/logout", { method: "POST" });
+    const res = await fetch(`${getBaseUrl()}/api/auth/logout`, {
+      method: "POST",
+    });
     const data = await res.json();
     if (res.ok) {
       setUser(null);

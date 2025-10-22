@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { getBaseUrl } from "@/lib/utils";
 
 interface TaskFormProps {
   type: "person" | "business";
@@ -45,7 +46,7 @@ const TaskForm = ({ type, tasks = [] }: TaskFormProps) => {
           : { businessId: Number(id) }),
       };
 
-      const res = await fetch("/api/tasks", {
+      const res = await fetch(`${getBaseUrl()}/api/tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

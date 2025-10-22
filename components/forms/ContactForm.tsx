@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
+import { getBaseUrl } from "@/lib/utils";
+
 import CheckboxGroup from "./CheckboxGroup";
 import { Dropdown } from "./Dropdown";
 import TextInput from "./TextInput";
@@ -113,7 +115,7 @@ const ContactForm = ({
     );
     if (!confirmed) return;
 
-    const res = await fetch(`/api${route}/${id}`, {
+    const res = await fetch(`${getBaseUrl()}/api${route}/${id}`, {
       method: "DELETE",
     });
 

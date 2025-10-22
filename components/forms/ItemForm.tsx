@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getBaseUrl } from "@/lib/utils";
 
 interface ItemFormProps {
   label: string;
@@ -77,7 +78,7 @@ const ItemForm = ({
 
     setLoading(true);
     try {
-      const res = await fetch(`/api${route}/${id}`, {
+      const res = await fetch(`${getBaseUrl()}/api${route}/${id}`, {
         method: "DELETE",
       });
 

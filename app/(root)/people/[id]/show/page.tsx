@@ -3,6 +3,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import TaskForm from "@/components/forms/TaskForm";
+import { getBaseUrl } from "@/lib/utils";
 
 const PersonPage = async ({ params }: { params: { id: string } }) => {
   const cookieStore = await cookies();
@@ -17,7 +18,7 @@ const PersonPage = async ({ params }: { params: { id: string } }) => {
     }
   );
 
-  const personRes = await fetch(`${process.env.BASE_URL}/api/people/${id}`, {
+  const personRes = await fetch(`${getBaseUrl()}/api/people/${id}`, {
     headers: { cookie: `token=${token}` },
     cache: "no-store",
   });
