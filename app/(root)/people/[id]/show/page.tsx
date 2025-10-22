@@ -10,13 +10,10 @@ const PersonPage = async ({ params }: { params: { id: string } }) => {
   const token = cookieStore.get("token")?.value;
   const { id } = await params;
 
-  const tasksRes = await fetch(
-    `${process.env.BASE_URL}/api/people/${id}/tasks`,
-    {
-      headers: { cookie: `token=${token}` },
-      cache: "no-store",
-    }
-  );
+  const tasksRes = await fetch(`${getBaseUrl()}/api/people/${id}/tasks`, {
+    headers: { cookie: `token=${token}` },
+    cache: "no-store",
+  });
 
   const personRes = await fetch(`${getBaseUrl()}/api/people/${id}`, {
     headers: { cookie: `token=${token}` },
