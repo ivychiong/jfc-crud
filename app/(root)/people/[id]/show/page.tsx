@@ -5,10 +5,13 @@ import Card from "@/components/Card";
 import TaskForm from "@/components/forms/TaskForm";
 import { getBaseUrl } from "@/lib/utils";
 
-const PersonPage = async ({ params }: { params: { id: string } }) => {
+type Params = Promise<{ slug: string }>;
+
+const PersonPage = async (props: { params: Params }) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-  const { id } = await params;
+  const params = await props.params;
+  const id = params.slug;
 
   const tasksRes = await fetch(`${getBaseUrl()}/api/people/${id}/tasks`, {
     headers: { cookie: `token=${token}` },
