@@ -6,13 +6,12 @@ import ContactForm, { Field } from "@/components/forms/ContactForm";
 import { getBaseUrl } from "@/lib/utils";
 
 type Item = { id: number; name: string };
-type Params = Promise<{ slug: string }>;
+type Params = Promise<{ id: string }>;
 
-const EditBusiness = async (props: { params: Params }) => {
+const EditBusiness = async ({ params }: { params: Params }) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-  const params = await props.params;
-  const id = params.slug;
+  const { id } = await params;
 
   const categoriesRes = await fetch(`${getBaseUrl()}/api/categories`, {
     headers: { cookie: `token=${token}` },

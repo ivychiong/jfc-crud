@@ -4,11 +4,11 @@ import Card from "@/components/Card";
 import ItemForm from "@/components/forms/ItemForm";
 import { prisma } from "@/lib/prisma";
 
-type Params = Promise<{ slug: string }>;
+type Params = Promise<{ id: string }>;
 
 const EditCategory = async (props: { params: Params }) => {
   const params = await props.params;
-  const id = params.slug;
+  const { id } = params;
   const category = await prisma.category.findUnique({
     where: { id: Number(id) },
   });

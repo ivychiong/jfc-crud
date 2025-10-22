@@ -6,13 +6,13 @@ import TaskForm from "@/components/forms/TaskForm";
 import Tag from "@/components/Tag";
 import { getBaseUrl } from "@/lib/utils";
 
-type Params = Promise<{ slug: string }>;
+type Params = Promise<{ id: string }>;
 
 const BusinessPage = async (props: { params: Params }) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   const params = await props.params;
-  const id = params.slug;
+  const { id } = await params;
 
   const tasksRes = await fetch(`${getBaseUrl()}/api/businesses/${id}/tasks`, {
     headers: { cookie: `token=${token}` },

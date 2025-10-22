@@ -141,7 +141,7 @@ const ItemForm = ({
               className={"btn-warning"}
               disabled={loading}
             >
-              {loading ? "Deleting..." : "Delete"}
+              Delete
             </Button>
           </div>
         )}
