@@ -1,9 +1,10 @@
 import crypto from "crypto";
 
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 import { prisma } from "@/lib/prisma";
+import { getBaseUrl } from "@/lib/utils";
 
 export async function POST(req: Request) {
   try {
@@ -23,26 +24,20 @@ export async function POST(req: Request) {
       data: { email, token, expiresAt },
     });
 
-    const resetLink = `${process.env.BASE_URL}/reset-password?token=${token}`;
+    const resetLink = `${getBaseUrl()}/reset-password?token=${token}`;
 
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-    await transporter.sendMail({
-      from: `"Support" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+      from: "JFC Crud Test Only <noreply@resend.dev>",
       to: email,
       subject: "Password Reset Request",
       html: `
-        <p>Hello ${user.name},</p>
-        <p>You requested a password reset. Click below to reset your password:</p>
-        <a href="${resetLink}" target="_blank">Reset Password</a>
-        <p>This link will expire in 60 minutes.</p>
-      `,
+    <p>Hello ${user.name},</p>
+    <p>You requested a password reset. Click below to reset your password:</p>
+    <a href="${resetLink}" target="_blank">Reset Password</a>
+    <p>This link will expire in 60 minutes.</p>
+  `,
     });
 
     return NextResponse.json({
