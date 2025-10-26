@@ -73,7 +73,8 @@ const ContactForm = ({
           lastName: formData.lastName,
           email: formData.email || null,
           phone: formData.phone || null,
-          businessId: formData.business || null,
+          businessId:
+            formData.business === "noValue" ? null : formData.business,
           tags: formData.tags || [],
         };
       }

@@ -76,7 +76,7 @@ export async function PATCH(
         phone: phone || null,
         business: businessId
           ? { connect: { id: Number(businessId) } }
-          : undefined,
+          : { disconnect: true },
         tags: tags
           ? { set: tags.map((id: string) => ({ id: Number(id) })) }
           : undefined,
