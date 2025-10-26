@@ -21,7 +21,6 @@ export async function GET(req: Request) {
       name?: string;
     };
 
-    console.log(decoded);
     return NextResponse.json({
       user: { id: decoded.userId, email: decoded.email, name: decoded.name },
     });

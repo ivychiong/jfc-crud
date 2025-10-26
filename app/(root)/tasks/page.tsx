@@ -2,9 +2,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import Header from "@/components/Header";
+import TasksTable from "@/components/TasksTable";
 import { getBaseUrl } from "@/lib/utils";
-
-import { TasksTable } from "./_components";
 
 const TasksPage = async () => {
   const cookieStore = await cookies();
@@ -12,7 +12,6 @@ const TasksPage = async () => {
 
   const res = await fetch(`${getBaseUrl()}/api/tasks`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!res.ok && res.status === 401) {
@@ -21,7 +20,13 @@ const TasksPage = async () => {
   }
 
   const tasks = await res.json();
-  return <TasksTable tasks={tasks} />;
+
+  return (
+    <>
+      <Header headerName="Tasks" />
+      <TasksTable tasks={tasks} />
+    </>
+  );
 };
 
 export default TasksPage;

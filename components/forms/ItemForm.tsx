@@ -42,7 +42,6 @@ const ItemForm = ({
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name }),
-        cache: "no-store",
       });
 
       if (res.status === 401) {
@@ -104,11 +103,10 @@ const ItemForm = ({
     }
   };
 
-  const actionTitle = action === "ADD" ? "Add New" : "Update";
+  const actionTitle = action === "ADD" ? "Add" : "Update";
 
   return (
     <>
-      <p className="text-lg font-semibold">{`${actionTitle} ${label}`}</p>
       <form onSubmit={handleSubmit}>
         <div className="space-y-3 flex flex-col mt-6">
           <Label htmlFor={label.toLowerCase()}>{`${label} Name`}</Label>
@@ -129,7 +127,7 @@ const ItemForm = ({
           </Button>
 
           <Button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? "Processing..." : `${actionTitle} ${label}`}
+            {loading ? "Processing..." : `${actionTitle}`}
           </Button>
         </div>
 

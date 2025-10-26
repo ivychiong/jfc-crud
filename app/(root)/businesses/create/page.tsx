@@ -4,6 +4,7 @@ import React from "react";
 import Card from "@/components/Card";
 import type { Field } from "@/components/forms/ContactForm";
 import ContactForm from "@/components/forms/ContactForm";
+import Header from "@/components/Header";
 import { getBaseUrl } from "@/lib/utils";
 
 type Item = { id: string; name: string };
@@ -14,12 +15,10 @@ const CreateBusiness = async () => {
 
   const categoriesRes = await fetch(`${getBaseUrl()}/api/categories`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   const tagsRes = await fetch(`${getBaseUrl()}/api/tags`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!categoriesRes.ok || !tagsRes.ok) {
@@ -62,13 +61,16 @@ const CreateBusiness = async () => {
   }
 
   return (
-    <Card>
-      <ContactForm
-        label="Business"
-        items={contactFormFields}
-        route="/businesses"
-      />
-    </Card>
+    <>
+      <Header headerName="Add Business" />
+      <Card>
+        <ContactForm
+          label="Business"
+          items={contactFormFields}
+          route="/businesses"
+        />
+      </Card>
+    </>
   );
 };
 

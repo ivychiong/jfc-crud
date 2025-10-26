@@ -6,7 +6,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
-import { UserProvider } from "@/provider/UserProvider";
+import { UserProvider } from "@/contexts/UserProvider";
 
 const figtree = localFont({
   src: "./fonts/FigtreeVF.ttf",

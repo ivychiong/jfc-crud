@@ -2,6 +2,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import ItemForm from "@/components/forms/ItemForm";
+import Header from "@/components/Header";
 import { prisma } from "@/lib/prisma";
 
 type Params = Promise<{ id: string }>;
@@ -18,15 +19,18 @@ const EditTag = async (props: { params: Params }) => {
   }
 
   return (
-    <Card>
-      <ItemForm
-        label="Tag"
-        action="EDIT"
-        route="/tags"
-        id={tag.id}
-        defaultValue={tag.name}
-      />
-    </Card>
+    <>
+      <Header headerName="Edit Tag" />
+      <Card>
+        <ItemForm
+          label="Tag"
+          action="EDIT"
+          route="/tags"
+          id={tag.id}
+          defaultValue={tag.name}
+        />
+      </Card>
+    </>
   );
 };
 

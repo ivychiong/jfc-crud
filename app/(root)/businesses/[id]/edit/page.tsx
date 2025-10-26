@@ -3,6 +3,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import ContactForm, { Field } from "@/components/forms/ContactForm";
+import Header from "@/components/Header";
 import { getBaseUrl } from "@/lib/utils";
 
 type Item = { id: number; name: string };
@@ -15,17 +16,14 @@ const EditBusiness = async ({ params }: { params: Params }) => {
 
   const categoriesRes = await fetch(`${getBaseUrl()}/api/categories`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   const tagsRes = await fetch(`${getBaseUrl()}/api/tags`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   const businessRes = await fetch(`${getBaseUrl()}/api/businesses/${id}`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!categoriesRes.ok || !tagsRes.ok || !businessRes.ok) {
@@ -77,16 +75,19 @@ const EditBusiness = async ({ params }: { params: Params }) => {
   };
 
   return (
-    <Card>
-      <ContactForm
-        label="Business"
-        items={contactFormFields}
-        route="/businesses"
-        action="EDIT"
-        id={id}
-        defaultValues={defaultValues}
-      />
-    </Card>
+    <>
+      <Header headerName="Edit Business" />
+      <Card>
+        <ContactForm
+          label="Business"
+          items={contactFormFields}
+          route="/businesses"
+          action="EDIT"
+          id={id}
+          defaultValues={defaultValues}
+        />
+      </Card>
+    </>
   );
 };
 

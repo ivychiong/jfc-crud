@@ -2,9 +2,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import Header from "@/components/Header";
+import TagsTable from "@/components/TagsTable";
 import { getBaseUrl } from "@/lib/utils";
-
-import { TagsTable } from "./_components";
 
 const TagsPage = async () => {
   const cookieStore = await cookies();
@@ -12,7 +12,6 @@ const TagsPage = async () => {
 
   const res = await fetch(`${getBaseUrl()}/api/tags`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!res.ok && res.status === 401) {
@@ -22,7 +21,12 @@ const TagsPage = async () => {
 
   const tags = await res.json();
 
-  return <TagsTable tags={tags} />;
+  return (
+    <>
+      <Header headerName="Tags" />
+      <TagsTable tags={tags} />
+    </>
+  );
 };
 
 export default TagsPage;

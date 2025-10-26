@@ -17,6 +17,14 @@ body {
   font-family: "Figtree", sans-serif;
 }
 
+h1 {
+  @apply text-xl font-semibold;
+}
+
+h2 {
+  @apply text-lg font-semibold;
+}
+
 @utility btn {
   @apply !rounded-full text-white font-bold;
 }

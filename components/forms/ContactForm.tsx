@@ -130,11 +130,10 @@ const ContactForm = ({
     router.refresh();
   };
 
-  const actionTitle = action === "ADD" ? "Add New" : "Update";
+  const actionTitle = action === "ADD" ? "Add" : "Update";
 
   return (
     <>
-      <p>{`${actionTitle} ${label}`}</p>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-wrap -mx-2">
           {items.map((item) => {
@@ -186,7 +185,7 @@ const ContactForm = ({
             type="submit"
             className="btn-primary"
             disabled={loading}
-          >{`${actionTitle} ${label}`}</Button>
+          >{`${actionTitle}`}</Button>
         </div>
         {action === "EDIT" && (
           <div>
@@ -196,7 +195,7 @@ const ContactForm = ({
               disabled={loading}
               onClick={handleDelete}
             >
-              DELETE
+              Delete
             </Button>
           </div>
         )}

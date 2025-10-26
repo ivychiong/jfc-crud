@@ -7,8 +7,6 @@ export async function POST(req: Request) {
   try {
     const { token, password, confirmPassword } = await req.json();
 
-    console.log(password);
-    console.log(confirmPassword);
     if (password !== confirmPassword)
       return NextResponse.json(
         { error: "Passwords do not match" },

@@ -36,7 +36,7 @@ export const Dropdown = ({
       <SelectTrigger id={name}>
         <SelectValue placeholder={`No ${label}`} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="bg-white">
         {options.map((opt) => (
           <SelectItem key={opt.value} value={opt.value}>
             {opt.label}

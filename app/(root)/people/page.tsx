@@ -2,9 +2,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import Header from "@/components/Header";
+import PeopleTable from "@/components/PeopleTable";
 import { getBaseUrl } from "@/lib/utils";
-
-import { PeopleTable } from "./_components";
 
 const PeoplePage = async () => {
   const cookieStore = await cookies();
@@ -12,7 +12,6 @@ const PeoplePage = async () => {
 
   const res = await fetch(`${getBaseUrl()}/api/people`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!res.ok && res.status === 401) {
@@ -22,7 +21,12 @@ const PeoplePage = async () => {
 
   const people = await res.json();
 
-  return <PeopleTable people={people} />;
+  return (
+    <>
+      <Header headerName="People" />
+      <PeopleTable people={people} />
+    </>
+  );
 };
 
 export default PeoplePage;

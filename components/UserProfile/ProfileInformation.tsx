@@ -5,8 +5,8 @@ import { toast } from "sonner";
 
 import TextInput from "@/components/forms/TextInput";
 import { Button } from "@/components/ui/button";
+import { User, useUser } from "@/contexts/UserProvider";
 import { getBaseUrl } from "@/lib/utils";
-import { User, useUser } from "@/provider/UserProvider";
 
 const ProfileInformation = () => {
   const { user, setUser } = useUser();

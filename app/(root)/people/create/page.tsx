@@ -3,6 +3,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import ContactForm, { Field } from "@/components/forms/ContactForm";
+import Header from "@/components/Header";
 import { getBaseUrl } from "@/lib/utils";
 
 type Item = { id: string; name: string };
@@ -13,12 +14,10 @@ const CreatePerson = async () => {
 
   const businessesRes = await fetch(`${getBaseUrl()}/api/businesses`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   const tagsRes = await fetch(`${getBaseUrl()}/api/tags`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!businessesRes.ok || !tagsRes.ok) {
@@ -61,9 +60,12 @@ const CreatePerson = async () => {
   }
 
   return (
-    <Card>
-      <ContactForm label="Person" items={contactFormFields} route="/people" />
-    </Card>
+    <>
+      <Header headerName="Add Person" />
+      <Card>
+        <ContactForm label="Person" items={contactFormFields} route="/people" />
+      </Card>
+    </>
   );
 };
 

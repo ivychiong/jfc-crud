@@ -22,12 +22,7 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
-  ...compat.extends(
-    "next/core-web-vitals",
-    "next/typescript",
-    "standard",
-    "prettier"
-  ),
+  ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
   {
     rules: {
       "import/order": [

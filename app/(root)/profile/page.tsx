@@ -3,10 +3,10 @@
 import React from "react";
 
 import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { ProfileInformation, UpdatePassword } from "@/components/UserProfile";
 import { getBaseUrl } from "@/lib/utils";
-
-import { ProfileInformation, UpdatePassword } from "./_components";
 
 const ProfilePage = () => {
   const handleDeleteAccount = async () => {
@@ -28,6 +28,7 @@ const ProfilePage = () => {
 
   return (
     <>
+      <Header headerName="Profile" />
       <Card>
         <h3 className="title">Profile Information</h3>
         <p className="description mb-4">

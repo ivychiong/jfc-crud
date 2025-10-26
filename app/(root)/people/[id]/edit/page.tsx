@@ -4,6 +4,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import ContactForm, { Field } from "@/components/forms/ContactForm";
+import Header from "@/components/Header";
 import { getBaseUrl } from "@/lib/utils";
 
 type Item = { id: number; name: string };
@@ -17,17 +18,14 @@ const EditPerson = async (props: { params: Params }) => {
 
   const businessesRes = await fetch(`${getBaseUrl()}/api/businesses`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   const tagsRes = await fetch(`${getBaseUrl()}/api/tags`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   const personRes = await fetch(`${getBaseUrl()}/api/people/${id}`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!businessesRes.ok || !tagsRes.ok || !personRes.ok) {
@@ -79,16 +77,19 @@ const EditPerson = async (props: { params: Params }) => {
   };
 
   return (
-    <Card>
-      <ContactForm
-        label="Person"
-        items={contactFormFields}
-        route="/people"
-        action="EDIT"
-        id={id}
-        defaultValues={defaultValues}
-      />
-    </Card>
+    <>
+      <Header headerName="Edit Person" />
+      <Card>
+        <ContactForm
+          label="Person"
+          items={contactFormFields}
+          route="/people"
+          action="EDIT"
+          id={id}
+          defaultValues={defaultValues}
+        />
+      </Card>
+    </>
   );
 };
 

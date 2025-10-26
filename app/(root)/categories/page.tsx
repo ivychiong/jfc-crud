@@ -2,9 +2,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import CategoriesTable from "@/components/CategoriesTable";
+import Header from "@/components/Header";
 import { getBaseUrl } from "@/lib/utils";
-
-import { CategoriesTable } from "./_components";
 
 const CategoriesPage = async () => {
   const cookieStore = await cookies();
@@ -12,7 +12,6 @@ const CategoriesPage = async () => {
 
   const res = await fetch(`${getBaseUrl()}/api/categories`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!res.ok && res.status === 401) {
@@ -21,7 +20,12 @@ const CategoriesPage = async () => {
   }
 
   const categories = await res.json();
-  return <CategoriesTable categories={categories} />;
+  return (
+    <>
+      <Header headerName="Categories" />
+      <CategoriesTable categories={categories} />
+    </>
+  );
 };
 
 export default CategoriesPage;

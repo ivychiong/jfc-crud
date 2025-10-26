@@ -140,14 +140,14 @@ const TasksTable = ({ tasks }: TasksTableProps) => {
     <Card>
       <div className="space-y-8">
         <div>
-          <h2 className="text-xl font-bold mb-4">Open Tasks List</h2>
+          <h2 className="mb-4">Open Tasks List</h2>
           {renderTasks(openTasks)}
         </div>
 
         <hr className="my-10 border-gray-200" />
 
         <div>
-          <h2 className="text-xl font-bold mb-4">Completed Tasks List</h2>
+          <h2 className="mb-4">Completed Tasks List</h2>
           {renderTasks(completedTasks)}
         </div>
       </div>

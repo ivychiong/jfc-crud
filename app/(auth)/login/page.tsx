@@ -8,9 +8,9 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import AuthForm from "@/components/forms/AuthForm";
+import { useUser } from "@/contexts/UserProvider";
 import { getBaseUrl } from "@/lib/utils";
 import { LoginSchema } from "@/lib/validation";
-import { useUser } from "@/provider/UserProvider";
 
 const defaultValues = {
   email: "",

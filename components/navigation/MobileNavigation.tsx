@@ -13,8 +13,8 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { navLinks } from "@/constants/links";
+import { useUser } from "@/contexts/UserProvider";
 import { getBaseUrl } from "@/lib/utils";
-import { useUser } from "@/provider/UserProvider";
 
 const NavigationLinksMobile = () => {
   const { setUser } = useUser();

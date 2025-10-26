@@ -12,8 +12,8 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { navLinks } from "@/constants/links";
+import { useUser } from "@/contexts/UserProvider";
 import { cn, getBaseUrl } from "@/lib/utils";
-import { useUser } from "@/provider/UserProvider";
 
 const NavigationLinks = () => {
   const { user, setUser } = useUser();

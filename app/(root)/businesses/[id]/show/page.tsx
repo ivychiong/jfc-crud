@@ -3,6 +3,7 @@ import React from "react";
 
 import Card from "@/components/Card";
 import TaskForm from "@/components/forms/TaskForm";
+import Header from "@/components/Header";
 import Tag from "@/components/Tag";
 import { getBaseUrl } from "@/lib/utils";
 
@@ -15,12 +16,10 @@ const BusinessPage = async ({ params }: { params: Params }) => {
 
   const tasksRes = await fetch(`${getBaseUrl()}/api/businesses/${id}/tasks`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   const businessRes = await fetch(`${getBaseUrl()}/api/businesses/${id}`, {
     headers: { cookie: `token=${token}` },
-    cache: "no-store",
   });
 
   if (!businessRes.ok || !tasksRes.ok) {
@@ -29,9 +28,6 @@ const BusinessPage = async ({ params }: { params: Params }) => {
 
   const business = await businessRes.json();
   const tasks = await tasksRes.json();
-
-  console.log(business);
-  console.log(tasks);
 
   const businessData = [
     {
@@ -57,19 +53,22 @@ const BusinessPage = async ({ params }: { params: Params }) => {
   ];
 
   return (
-    <Card>
-      <div className="flex">
-        <div className="flex-1">
-          <p className="mb-2 font-bold">Business Details</p>
-          {businessData.map((data) => (
-            <div key={data.label} className="flex gap-1 mb-2">
-              <p className="font-medium">{data.label}</p>:<p>{data.value}</p>
-            </div>
-          ))}
+    <>
+      <Header headerName={`Profile: ${business.name}`} />
+      <Card>
+        <div className="flex">
+          <div className="flex-1">
+            <p className="mb-2 font-bold">Business Details</p>
+            {businessData.map((data) => (
+              <div key={data.label} className="flex gap-1 mb-2">
+                <p className="font-medium">{data.label}</p>:<p>{data.value}</p>
+              </div>
+            ))}
+          </div>
+          <TaskForm tasks={tasks} type="business" />
         </div>
-        <TaskForm tasks={tasks} type="business" />
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 };
 
